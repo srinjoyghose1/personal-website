@@ -1,93 +1,110 @@
 export const researchProjects = [
   {
     id: 1,
-    date: '2025-03-01',
-    title: 'CRISPR-mediated gene regulation in metabolic pathways',
-    abstract: 'Investigating the use of CRISPR-dCas9 systems to modulate expression of key enzymes in the glycolytic pathway, with implications for metabolic engineering and therapeutic intervention.',
-    domain: 'Biology',
-    tags: ['CRISPR', 'Metabolomics', 'Gene Regulation'],
-    status: 'In Progress',
-    findings: 'Preliminary results show 40% upregulation in target gene expression with minimal off-target effects.'
+    date: '2023–08',
+    title: 'Customizable stem cell bioreactor with mechanical and chemical stimuli',
+    abstract: 'Founded and led a project developing a programmable bioreactor that uses mechanical strain and chemical co-stimulation to tailor stem cell proliferation for patient-specific needs — a scalable, cost-effective alternative to static culture systems.',
+    category: 'Research',
+    findings: 'Demonstrated tunable differentiation outcomes via strain frequency and growth factor co-stimulation. Platform scalable to 96-well format. Developed at MiNiMedicine Biomedical Engineering Lab.',
   },
   {
     id: 2,
-    date: '2025-01-15',
-    title: 'Valuation framework for early-stage biotech: Beyond DCF',
-    abstract: 'A critical examination of traditional discounted cash flow models applied to pre-revenue biotech firms, proposing a probability-weighted pipeline valuation methodology.',
-    domain: 'Finance',
-    tags: ['Valuation', 'Biotech', 'Risk Analysis'],
-    status: 'Complete',
-    findings: 'Risk-adjusted NPV models incorporating clinical trial success rates outperform traditional DCF by 23% in predictive accuracy.'
+    date: '2024–01',
+    title: 'Organ-on-a-chip model of the human optic nerve head',
+    abstract: 'Engineered a microfluidic device replicating the biomechanics, fluid dynamics, and cellular architecture of the human optic nerve head — a sustainable preclinical alternative to in vivo rat models for glaucoma and neurodegeneration research.',
+    category: 'Research',
+    findings: 'Model reproduces intraocular pressure dynamics and astrocyte morphology consistent with ex vivo tissue. Undergoing validation against rat model benchmarks.',
   },
   {
     id: 3,
-    date: '2024-11-20',
-    title: 'Network topology and antibiotic resistance propagation',
-    abstract: 'Modelling bacterial communication networks to understand how antibiotic resistance spreads through hospital microbial ecosystems using graph-theoretic approaches.',
-    domain: 'Biology',
-    tags: ['Network Biology', 'Antibiotic Resistance', 'Graph Theory'],
-    status: 'Published',
-    findings: 'Scale-free network topology identified in hospital E. coli strains, suggesting targeted intervention points.'
+    date: '2024–06',
+    title: 'ML denoising framework for immunofluorescence imaging',
+    abstract: 'Developed a deep learning pipeline to denoise immunofluorescence microscopy images, enabling higher-fidelity alignment analysis of cytoskeletal and nuclear markers in mechanically stimulated stem cells.',
+    category: 'Research',
+    findings: '75% reduction in shot noise while preserving subcellular feature fidelity. Model generalized across three antibody stain channels.',
   },
+];
+
+export const theses = [
   {
     id: 4,
-    date: '2024-09-05',
-    title: 'Long-short equity thesis: Synthetic biology sector rotation',
-    abstract: 'Analysis of capital flow dynamics in synthetic biology, identifying undervalued platform companies versus overvalued application-layer plays during the 2024 sector consolidation.',
-    domain: 'Finance',
-    tags: ['Equity Research', 'Synthetic Biology', 'Sector Analysis'],
-    status: 'Complete',
-    findings: 'Identified 3 platform companies trading at significant discounts to intrinsic value based on IP portfolio analysis.'
+    date: '2026–03',
+    title: 'Healthcare and vertical SaaS long/short equity research',
+    abstract: 'Developing long/short equity theses weekly within the healthcare pod and vertical software pod at Balyasny Asset Management — using fundamental research, DCF/comps modeling, macro analysis, and scientific drug channel checks.',
+    category: 'Investment Theses',
+    findings: 'Member of BAM\'s inaugural intercollegiate investor cohort managing a selected $100k portfolio.',
+    institution: 'Balyasny Asset Management',
   },
   {
     id: 5,
-    date: '2024-07-12',
-    title: 'Venture signal analysis: What predicts Series A success?',
-    abstract: 'Quantitative analysis of 200+ seed-stage biotech and deeptech companies, identifying leading indicators of successful Series A fundraising beyond traditional metrics.',
-    domain: 'Startups',
-    tags: ['Venture Capital', 'Predictive Analytics', 'Startup Ecosystems'],
-    status: 'Complete',
-    findings: 'Founder-market fit and IP defensibility emerged as strongest predictors, outperforming team credentials alone.'
-  }
+    date: '2025–11',
+    title: 'Long equity thesis: EV company DCF and market penetration model',
+    abstract: 'Built a 10-year DCF model for an electric vehicle company with sensitivity analyses on TAM penetration rates, sector margins, and licensing revenue streams. Defended before Point72 NYC analysts as finalist out of ~750 national submissions.',
+    category: 'Investment Theses',
+    findings: '~30% upside to market price under base-case penetration assumptions; licensing optionality represented 18% of intrinsic value.',
+    institution: 'WITG × Point72 Case Competition',
+  },
+  {
+    id: 6,
+    date: '2026–01',
+    title: 'mRNA mid-cap pharma: tech differentiation assessment prior to $2.4B acquisition',
+    abstract: 'Led a pro-bono consulting engagement assessing technology differentiation for an mRNA pharmaceutical mid-cap ahead of a $2.4B acquisition. Built a quantitative threat-assessment scoring system and modular deal benchmarking framework.',
+    category: 'Community',
+    findings: 'IP portfolio analysis revealed 3 defensible platform differentiators. FDA/HHS policy risk flagged as primary headwind. Linked transaction structure to new entrant U.S. and Chinese biotech dynamics.',
+    institution: 'Penn Undergraduate Biotechnology Society',
+  },
+  {
+    id: 7,
+    date: '2026–02',
+    title: 'Drug policy, Chinese medicine markets, and biotech IPO dynamics in Hong Kong SAR',
+    abstract: 'Wharton Research Assistantship scholarship project examining HKEX Chapter 18A drug approval pathways, the commercialization of traditional Chinese medicine, and biotech IPO conditions relative to NASDAQ peers.',
+    category: 'Projects',
+    findings: 'Preliminary: HKEX Chapter 18A listings show significantly higher post-IPO volatility relative to NASDAQ biotech comparables. $6,500 Wharton Research Award.',
+    institution: 'Wharton Research Assistantship Program',
+  },
 ];
 
 export const blogPosts = [
   {
     id: 1,
-    date: '2025-03-28',
-    title: 'The molecular logic of financial markets',
-    excerpt: 'There is a strange isomorphism between the allosteric regulation of enzymes and the feedback mechanisms of financial markets. Both systems exhibit non-linear responses to input signals, both have evolved saturation kinetics, and both can be hijacked by competitive inhibitors.',
-    tags: ['Biology', 'Finance', 'Systems Thinking'],
-    readTime: '8 min',
-    slug: 'molecular-logic-markets'
+    date: '2026-02-18',
+    title: 'The optic nerve head as a pressure transducer: notes on building the model',
+    excerpt: 'The optic nerve head is one of the most mechanically complex structures in the body — a porous lamina cribrosa spanning an arterial pressure gradient, subject to cerebrospinal fluid dynamics on one side and intraocular pressure on the other. Here is what we learned trying to replicate it on a chip.',
+    category: 'Science',
+    tags: ['Bioengineering', 'Neuroscience', 'Microfluidics'],
+    readTime: '11 min',
+    slug: 'optic-nerve-chip',
   },
   {
     id: 2,
-    date: '2025-02-14',
-    title: 'Why I photograph: A note on scientific observation',
-    excerpt: 'Photography and microscopy are the same act at different scales. Both demand you slow down enough to really look — to notice the specimen before you name it. I started photographing as a discipline in observation, not aesthetics.',
-    tags: ['Photography', 'Science', 'Personal'],
-    readTime: '5 min',
-    slug: 'why-i-photograph'
+    date: '2025-11-20',
+    title: 'Reading the balance sheet like a genome',
+    excerpt: 'A genome is a compressed programme for building a living system. A balance sheet is a compressed programme for understanding a firm\'s biochemistry. Both are written in their own syntax, both reward careful reading, and both hide as much as they reveal.',
+    category: 'Finance',
+    tags: ['Finance', 'Biology', 'Systems Thinking'],
+    readTime: '11 min',
+    slug: 'balance-sheet-genome',
   },
   {
     id: 3,
-    date: '2025-01-03',
-    title: 'Reading the balance sheet like a genome',
-    excerpt: 'A genome is a compressed programme for building a living system. A balance sheet is a compressed programme for understanding a firm\'s biochemistry. Both are written in their own syntax, both reward careful reading, and both hide as much as they reveal.',
-    tags: ['Finance', 'Biology'],
-    readTime: '11 min',
-    slug: 'balance-sheet-genome'
+    date: '2025-09-03',
+    title: 'What stem cell bioreactors teach you about process control',
+    excerpt: 'Building a stem cell bioreactor forces you to think about feedback loops in a visceral way. You are not programming a computer — you are programming cells, which push back. Mechanical strain, chemical gradients, and temperature interact in ways no single-variable model captures.',
+    category: 'Science',
+    tags: ['Bioengineering', 'Stem Cells', 'Process Biology'],
+    readTime: '8 min',
+    slug: 'bioreactor-process-control',
   },
   {
     id: 4,
-    date: '2024-12-18',
-    title: 'On intellectual polyglotism: The case for working across disciplines',
-    excerpt: 'The most interesting problems tend to live at disciplinary boundaries. Not because they are too hard for any one field, but because they are invisible from within any single tradition. This is an argument for cultivating genuine fluency across domains.',
-    tags: ['General', 'Research', 'Interdisciplinary'],
-    readTime: '7 min',
-    slug: 'intellectual-polyglotism'
-  }
+    date: '2025-03-28',
+    title: 'The molecular logic of financial markets',
+    excerpt: 'There is a strange isomorphism between the allosteric regulation of enzymes and the feedback mechanisms of financial markets. Both systems exhibit non-linear responses to input signals, both have evolved saturation kinetics, and both can be hijacked by competitive inhibitors.',
+    category: 'Systems',
+    tags: ['Finance', 'Biology', 'Systems Thinking'],
+    readTime: '8 min',
+    slug: 'molecular-logic-markets',
+  },
 ];
 
 export const photos = [
@@ -95,19 +112,19 @@ export const photos = [
     id: 1,
     title: 'Diatom Colony, 400x',
     date: '2025-02-10',
-    location: 'University Lab, Cambridge',
+    location: 'University Lab',
     category: 'Microscopy',
     placeholder: 'bg-gradient-to-br from-teal-100 to-cyan-200',
-    aspect: 'tall'
+    aspect: 'tall',
   },
   {
     id: 2,
-    title: 'Trading Floor, Pre-Market',
-    date: '2024-11-28',
-    location: 'Canary Wharf, London',
-    category: 'Documentary',
-    placeholder: 'bg-gradient-to-br from-gray-100 to-gray-200',
-    aspect: 'wide'
+    title: 'Lamina Cribrosa Cross-Section',
+    date: '2024-11-05',
+    location: 'MiNiMedicine Lab',
+    category: 'Scientific',
+    placeholder: 'bg-gradient-to-br from-indigo-100 to-teal-100',
+    aspect: 'square',
   },
   {
     id: 3,
@@ -115,8 +132,8 @@ export const photos = [
     date: '2024-10-15',
     location: 'Research Lab',
     category: 'Scientific',
-    placeholder: 'bg-gradient-to-br from-indigo-100 to-teal-100',
-    aspect: 'square'
+    placeholder: 'bg-gradient-to-br from-slate-100 to-indigo-100',
+    aspect: 'wide',
   },
   {
     id: 4,
@@ -125,7 +142,7 @@ export const photos = [
     location: 'Kolkata, India',
     category: 'Street',
     placeholder: 'bg-gradient-to-br from-amber-100 to-orange-100',
-    aspect: 'wide'
+    aspect: 'wide',
   },
   {
     id: 5,
@@ -134,15 +151,15 @@ export const photos = [
     location: 'University Lab',
     category: 'Microscopy',
     placeholder: 'bg-gradient-to-br from-teal-50 to-cyan-100',
-    aspect: 'square'
+    aspect: 'square',
   },
   {
     id: 6,
-    title: 'Biotech Campus at Dusk',
-    date: '2024-04-30',
-    location: 'Cambridge Science Park',
-    category: 'Architecture',
-    placeholder: 'bg-gradient-to-br from-slate-100 to-blue-100',
-    aspect: 'tall'
-  }
+    title: 'Canary Wharf Pre-Market',
+    date: '2024-11-28',
+    location: 'London, UK',
+    category: 'Documentary',
+    placeholder: 'bg-gradient-to-br from-gray-100 to-gray-200',
+    aspect: 'tall',
+  },
 ];

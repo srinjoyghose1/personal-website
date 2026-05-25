@@ -1,272 +1,145 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { researchProjects } from '../data/content';
+import { useResearch, usePages } from '../hooks/useContent';
 
-const domains = ['All', 'Biology', 'Finance', 'Startups'];
-
-const domainColor = {
-  Biology: '#00BFA6',
-  Finance: '#22D3EE',
-  Startups: '#34D399',
-};
-
-export default function ResearchPage({ isDark }) {
-  const [filter, setFilter] = useState('All');
-  const [expanded, setExpanded] = useState(null);
-
+function ProjectCard({ item, isDark, onClick }) {
   const textColor = isDark ? '#E8E8E8' : '#1A1A1A';
-  const muted = isDark ? '#888' : '#6B6B6B';
-  const border = isDark ? '#2A2A2A' : '#E5E5E5';
-  const cardBg = isDark ? '#1A1A1A' : '#FAFAFA';
-
-  const filtered = filter === 'All' ? researchProjects : researchProjects.filter(p => p.domain === filter);
+  const muted     = isDark ? '#666'    : '#888';
+  const border    = isDark ? '#3A3A3A' : '#B0B0B0';
 
   return (
     <div
-      className="min-h-screen w-full max-w-4xl mx-auto px-4 sm:px-8 py-20"
-      style={{ color: textColor }}
+      onClick={onClick}
+      style={{
+        border: `2px solid ${border}`,
+        borderRadius: 6,
+        padding: '20px 16px',
+        minHeight: 120,
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 8,
+        transition: 'border-color 0.15s',
+      }}
     >
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <p style={{
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '0.6rem',
-          letterSpacing: '0.25em',
-          textTransform: 'uppercase',
-          color: '#00BFA6',
-          marginBottom: 12,
-        }}>
-          // research.log
-        </p>
-        <h1 style={{
-          fontFamily: "'Space Mono', monospace",
-          fontWeight: 700,
-          fontSize: 'clamp(1.8rem, 4vw, 3rem)',
-          color: textColor,
-          lineHeight: 1.2,
-          marginBottom: 16,
-        }}>
-          Research &amp; Theses
-        </h1>
-        <p style={{
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '0.85rem',
-          lineHeight: 1.75,
-          color: muted,
-          maxWidth: 520,
-          marginBottom: 40,
-        }}>
-          A chronological record of intellectual work — from molecular biology to market structure.
-          Each entry is a dated journal page in an ongoing inquiry.
-        </p>
-      </motion.div>
+      <span style={{
+        fontFamily: "'JetBrains Mono', monospace",
+        fontSize: '0.55rem',
+        letterSpacing: '0.16em',
+        textTransform: 'uppercase',
+        color: '#00BFA6',
+      }}>
+        {item.category}
+      </span>
+      <h3 style={{
+        fontFamily: "'DM Sans', system-ui, sans-serif",
+        fontWeight: 600,
+        fontSize: '1rem',
+        color: item.published ? textColor : muted,
+        lineHeight: 1.3,
+        textAlign: 'center',
+        margin: 0,
+        textDecoration: item.published ? 'underline' : 'none',
+        textDecorationColor: '#00BFA6',
+        textUnderlineOffset: '4px',
+        textDecorationThickness: '2px',
+      }}>
+        {item.title}
+      </h3>
+    </div>
+  );
+}
 
-      {/* Filter bar */}
+function DetailDrawer({ item, isDark, onClose }) {
+  const textColor = isDark ? '#E8E8E8' : '#1A1A1A';
+  const muted     = isDark ? '#777'    : '#555';
+  const bg        = isDark ? '#111'    : '#fff';
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    const h = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', h);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', h);
+    };
+  }, [onClose]);
+
+  return (
+    <>
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="flex flex-wrap gap-2 mb-12"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        onClick={onClose}
+        style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.48)', backdropFilter: 'blur(3px)', zIndex: 200 }}
+      />
+      <motion.div
+        initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
+        transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+        style={{
+          position: 'fixed', top: 0, right: 0, bottom: 0,
+          width: 'min(520px, 92vw)', background: bg, zIndex: 201,
+          overflowY: 'auto', display: 'flex', flexDirection: 'column',
+          boxShadow: '-8px 0 48px rgba(0,0,0,0.18)',
+        }}
       >
-        {domains.map(d => (
-          <button
-            key={d}
-            onClick={() => setFilter(d)}
-            style={{
-              fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '0.65rem',
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              padding: '6px 14px',
-              borderRadius: 6,
-              border: `1px solid ${filter === d ? '#00BFA6' : border}`,
-              color: filter === d ? '#00BFA6' : muted,
-              background: 'transparent',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
-          >
-            {d}
-          </button>
+        <button onClick={onClose} style={{
+          position: 'sticky', top: 0, alignSelf: 'flex-end',
+          margin: '16px 16px 0 0', width: 34, height: 34, borderRadius: '50%',
+          border: `1px solid ${isDark ? '#333' : '#E5E5E5'}`, background: bg,
+          color: muted, fontSize: '1.1rem', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>×</button>
+        <div style={{ padding: '0 32px 48px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.62rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#00BFA6' }}>{item.date}</span>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 300, fontSize: 'clamp(1.5rem, 3vw, 2rem)', color: textColor, lineHeight: 1.2, fontStyle: 'italic', margin: 0 }}>{item.title}</h2>
+          {item.institution && <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', color: muted, margin: 0 }}>{item.institution}</p>}
+          <div style={{ height: 1, background: isDark ? '#222' : '#EBEBEB' }} />
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontWeight: 300, fontSize: '1rem', lineHeight: 1.85, color: textColor, margin: 0 }}>{item.abstract}</p>
+          {item.findings && <p style={{ fontFamily: "'DM Sans', system-ui", fontWeight: 300, fontSize: '0.95rem', lineHeight: 1.8, color: muted, margin: 0 }}>{item.findings}</p>}
+        </div>
+      </motion.div>
+    </>
+  );
+}
+
+export default function ResearchPage({ isDark }) {
+  const allItems = useResearch();
+  const pages    = usePages();
+  const [selected, setSelected] = useState(null);
+
+  const textColor = isDark ? '#E8E8E8' : '#1A1A1A';
+
+  return (
+    <div style={{ minHeight: '100vh', width: '100%', maxWidth: 960, margin: '0 auto', padding: '5rem 24px', color: textColor }}>
+      <motion.h1
+        initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+        style={{
+          fontFamily: "'Space Mono', monospace", fontWeight: 700,
+          fontSize: 'clamp(1.8rem, 5vw, 3rem)', color: textColor,
+          lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: 36,
+          textAlign: 'center',
+        }}
+      >
+        {pages.research?.heading ?? '/work'}
+      </motion.h1>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+        gap: 16,
+      }}>
+        {allItems.map(item => (
+          <ProjectCard key={item.id} item={item} isDark={isDark} onClick={() => setSelected(item)} />
         ))}
-      </motion.div>
-
-      {/* Timeline */}
-      <div className="relative">
-        {/* Vertical line */}
-        <div style={{
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          bottom: 0,
-          width: 1,
-          background: `linear-gradient(to bottom, #00BFA6, transparent)`,
-        }} />
-
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={filter}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="flex flex-col gap-0"
-          >
-            {filtered.map((project, i) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, x: -16 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.08 }}
-                className="relative pl-8 pb-10"
-              >
-                {/* Timeline dot */}
-                <div style={{
-                  position: 'absolute',
-                  left: -5,
-                  top: 6,
-                  width: 10,
-                  height: 10,
-                  borderRadius: '50%',
-                  background: domainColor[project.domain] || '#00BFA6',
-                  border: `2px solid ${isDark ? '#0D0D0D' : '#FFFFFF'}`,
-                }} />
-
-                {/* Card */}
-                <div
-                  style={{
-                    background: cardBg,
-                    border: `1px solid ${expanded === project.id ? '#00BFA6' : border}`,
-                    borderRadius: 12,
-                    overflow: 'hidden',
-                    transition: 'border-color 0.2s',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => setExpanded(expanded === project.id ? null : project.id)}
-                >
-                  <div className="p-6">
-                    <div className="flex items-start justify-between gap-4 flex-wrap">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 flex-wrap mb-3">
-                          <span style={{
-                            fontFamily: 'JetBrains Mono, monospace',
-                            fontSize: '0.62rem',
-                            color: muted,
-                            letterSpacing: '0.1em',
-                          }}>
-                            {project.date}
-                          </span>
-                          <span style={{
-                            fontFamily: 'JetBrains Mono, monospace',
-                            fontSize: '0.6rem',
-                            letterSpacing: '0.15em',
-                            textTransform: 'uppercase',
-                            padding: '2px 8px',
-                            borderRadius: 4,
-                            background: `${domainColor[project.domain]}20`,
-                            color: domainColor[project.domain] || '#00BFA6',
-                            border: `1px solid ${domainColor[project.domain]}40`,
-                          }}>
-                            {project.domain}
-                          </span>
-                          <span style={{
-                            fontFamily: 'JetBrains Mono, monospace',
-                            fontSize: '0.6rem',
-                            letterSpacing: '0.15em',
-                            textTransform: 'uppercase',
-                            color: project.status === 'Published' ? '#34D399' : muted,
-                          }}>
-                            {project.status}
-                          </span>
-                        </div>
-                        <h3 style={{
-                          fontFamily: "'Space Mono', monospace",
-                          fontWeight: 700,
-                          fontSize: '1rem',
-                          color: textColor,
-                          lineHeight: 1.4,
-                          marginBottom: 8,
-                        }}>
-                          {project.title}
-                        </h3>
-                        <p style={{
-                          fontFamily: 'JetBrains Mono, monospace',
-                          fontSize: '0.78rem',
-                          lineHeight: 1.75,
-                          color: muted,
-                        }}>
-                          {project.abstract}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mt-4">
-                      {project.tags.map(tag => (
-                        <span key={tag} style={{
-                          fontFamily: 'JetBrains Mono, monospace',
-                          fontSize: '0.58rem',
-                          letterSpacing: '0.12em',
-                          textTransform: 'uppercase',
-                          padding: '2px 7px',
-                          borderRadius: 4,
-                          border: `1px solid ${border}`,
-                          color: muted,
-                        }}>
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Expanded findings */}
-                  <AnimatePresence>
-                    {expanded === project.id && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25 }}
-                        style={{
-                          borderTop: `1px solid ${border}`,
-                          overflow: 'hidden',
-                        }}
-                      >
-                        <div className="p-6">
-                          <p style={{
-                            fontFamily: 'JetBrains Mono, monospace',
-                            fontSize: '0.6rem',
-                            letterSpacing: '0.2em',
-                            textTransform: 'uppercase',
-                            color: '#00BFA6',
-                            marginBottom: 8,
-                          }}>
-                            key findings
-                          </p>
-                          <p style={{
-                            fontFamily: 'JetBrains Mono, monospace',
-                            fontSize: '0.8rem',
-                            lineHeight: 1.75,
-                            color: textColor,
-                            borderLeft: '2px solid #00BFA6',
-                            paddingLeft: 16,
-                          }}>
-                            {project.findings}
-                          </p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
       </div>
+
+      <AnimatePresence>
+        {selected && (
+          <DetailDrawer key={selected.id} item={selected} isDark={isDark} onClose={() => setSelected(null)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

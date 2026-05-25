@@ -50,7 +50,7 @@ function BentoCard({ children, className = '', style = {}, to, isDark, span, i =
   return <div className={span}>{inner}</div>;
 }
 
-function TagPill({ label, isDark }) {
+function TagPill({ label }) {
   return (
     <span style={{
       fontFamily: 'JetBrains Mono, monospace',
@@ -75,7 +75,7 @@ export default function BentoGrid({ isDark }) {
 
   return (
     <section
-      className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-16"
+      className="w-full max-w-5xl mx-auto px-5 sm:px-8 py-16"
       id="bento"
     >
       {/* Section label */}
@@ -91,6 +91,7 @@ export default function BentoGrid({ isDark }) {
           textTransform: 'uppercase',
           color: muted,
           marginBottom: 32,
+          textAlign: 'center',
         }}
       >
         // index.laboratory
@@ -103,8 +104,8 @@ export default function BentoGrid({ isDark }) {
 
         {/* About card — 5 cols */}
         <BentoCard to="/about" isDark={isDark} span="col-span-12 sm:col-span-5" i={0} style={{ minHeight: 200 }}>
-          <div className="p-7 h-full flex flex-col justify-between">
-            <div>
+          <div className="p-7 h-full flex flex-col justify-between items-center text-center">
+            <div style={{ maxWidth: 430, margin: '0 auto' }}>
               <p style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: '0.6rem',
@@ -134,7 +135,7 @@ export default function BentoGrid({ isDark }) {
                 Student, researcher, analyst. Working across the molecular and the monetary — because the best problems live on boundaries.
               </p>
             </div>
-            <div className="flex flex-wrap gap-2 mt-4">
+            <div className="flex flex-wrap justify-center gap-2 mt-4">
               <TagPill label="Biology" />
               <TagPill label="Finance" />
               <TagPill label="Research" />
@@ -144,8 +145,8 @@ export default function BentoGrid({ isDark }) {
 
         {/* Research card — 7 cols */}
         <BentoCard to="/research" isDark={isDark} span="col-span-12 sm:col-span-7" i={1} style={{ minHeight: 200 }}>
-          <div className="p-7 h-full flex flex-col justify-between">
-            <div>
+          <div className="p-7 h-full flex flex-col justify-between items-center text-center">
+            <div style={{ maxWidth: 560, margin: '0 auto' }}>
               <p style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: '0.6rem',
@@ -179,8 +180,8 @@ export default function BentoGrid({ isDark }) {
                 {latestProject.abstract}
               </p>
             </div>
-            <div className="flex items-center justify-between mt-4">
-              <div className="flex flex-wrap gap-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4">
+              <div className="flex flex-wrap justify-center gap-2">
                 {latestProject.tags.slice(0, 2).map(tag => (
                   <TagPill key={tag} label={tag} />
                 ))}
@@ -200,8 +201,8 @@ export default function BentoGrid({ isDark }) {
 
         {/* Blog card — 7 cols */}
         <BentoCard to="/blog" isDark={isDark} span="col-span-12 sm:col-span-7" i={2} style={{ minHeight: 220 }}>
-          <div className="p-7 h-full flex flex-col justify-between">
-            <div>
+          <div className="p-7 h-full flex flex-col justify-between items-center text-center">
+            <div style={{ maxWidth: 560, margin: '0 auto' }}>
               <p style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: '0.6rem',
@@ -243,7 +244,7 @@ export default function BentoGrid({ isDark }) {
                 {latest.excerpt}
               </p>
             </div>
-            <div className="flex flex-wrap gap-2 mt-4">
+            <div className="flex flex-wrap justify-center gap-2 mt-4">
               {latest.tags.map(tag => <TagPill key={tag} label={tag} />)}
             </div>
           </div>
@@ -291,6 +292,7 @@ export default function BentoGrid({ isDark }) {
               left: 0,
               right: 0,
               padding: '20px 24px',
+              textAlign: 'center',
               background: isDark
                 ? 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)'
                 : 'linear-gradient(to top, rgba(255,255,255,0.9), transparent)',
@@ -321,8 +323,8 @@ export default function BentoGrid({ isDark }) {
 
         {/* Finance thesis card — 4 cols */}
         <BentoCard to="/research?filter=Finance" isDark={isDark} span="col-span-12 sm:col-span-4" i={4} style={{ minHeight: 180 }}>
-          <div className="p-7 h-full flex flex-col justify-between">
-            <div>
+          <div className="p-7 h-full flex flex-col justify-between items-center text-center">
+            <div style={{ maxWidth: 320, margin: '0 auto' }}>
               <p style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: '0.6rem',
@@ -365,8 +367,8 @@ export default function BentoGrid({ isDark }) {
 
         {/* Startup card — 4 cols */}
         <BentoCard isDark={isDark} span="col-span-12 sm:col-span-4" i={5} style={{ minHeight: 180 }}>
-          <div className="p-7 h-full flex flex-col justify-between">
-            <div>
+          <div className="p-7 h-full flex flex-col justify-between items-center text-center">
+            <div style={{ maxWidth: 320, margin: '0 auto' }}>
               <p style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: '0.6rem',
@@ -396,7 +398,7 @@ export default function BentoGrid({ isDark }) {
                 Venture thinking, founder patterns, and the science of building companies from scratch.
               </p>
             </div>
-            <div className="flex flex-wrap gap-2 mt-3">
+            <div className="flex flex-wrap justify-center gap-2 mt-3">
               <TagPill label="Venture" />
               <TagPill label="Startups" />
             </div>
@@ -411,8 +413,8 @@ export default function BentoGrid({ isDark }) {
             border: '1px solid rgba(0,191,166,0.3)',
           }}
         >
-          <div className="p-7 h-full flex flex-col justify-between">
-            <div>
+          <div className="p-7 h-full flex flex-col justify-between items-center text-center">
+            <div style={{ maxWidth: 320, margin: '0 auto' }}>
               <p style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: '0.6rem',

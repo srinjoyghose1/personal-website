@@ -1,0 +1,40 @@
+/* All values marked PLACEHOLDER will be revised. Components must consume these tokens only. */
+:root {
+  /* Stage and binder shell */
+  --color-stage:           #0F0F0F;               /* PLACEHOLDER: dark backdrop  */
+  --color-cover:           #C73E1D;               /* PLACEHOLDER: front cover    */
+  --color-cover-text:      #F4EFE6;               /* PLACEHOLDER: title on cover */
+  --color-cover-caption:   rgba(244,239,230,0.55);/* PLACEHOLDER: small captions */
+  --color-spine:           #1A1A1A;               /* PLACEHOLDER: ring column    */
+  --color-ring:            #C0BFBC;               /* PLACEHOLDER: metal ring     */
+  --color-ring-highlight:  #EEECEA;               /* PLACEHOLDER: ring specular  */
+  --color-ring-shadow:     #5A5858;               /* PLACEHOLDER: ring shadow    */
+  --color-back-cover:      #1C1C1C;               /* PLACEHOLDER: back cover     */
+
+  /* Paper and ink */
+  --color-paper:           #F4EFE6;               /* PLACEHOLDER: interior page  */
+  --color-paper-edge:      #DDD7CC;               /* PLACEHOLDER: back face      */
+  --color-paper-stack:     #E8E2D8;               /* PLACEHOLDER: edge stack     */
+  --color-ink:             #1A1A1A;               /* PLACEHOLDER: primary type   */
+  --color-ink-muted:       #6A6A66;               /* PLACEHOLDER: secondary type */
+  --color-rule:            rgba(26,26,26,0.14);   /* PLACEHOLDER: hairline rule  */
+
+  /* Section accent colours (one per category) */
+  --color-section-research:   #1F3A2F;
+  --color-section-projects:   #1E2A42;
+  --color-section-theses:     #4A2E12;
+  --color-section-community:  #2F1E3A;
+
+  /* Section text (contrast over accent) */
+  --color-section-text:    #F0EBE0;
+
+  /* Typography */
+  --font-display: "Space Mono", monospace;
+  --font-body:    "DM Sans", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", monospace;
+
+  /* Motion */
+  --ease-turn:     cubic-bezier(0.22, 0.61, 0.36, 1);
+  --duration-turn: 850ms;
+  --duration-open: 1100ms;
+}

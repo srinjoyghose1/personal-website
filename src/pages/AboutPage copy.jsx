@@ -49,7 +49,7 @@ export default function AboutPage({ isDark }) {
         <div style={{ position: 'absolute', inset: 0, opacity: 0.08 }}>
           <ParticleField isDark={isDark} />
         </div>
-        <div className="relative z-10 max-w-2xl" style={{ margin: '0 auto', padding: '0 2rem' }}>
+        <div className="relative z-10 max-w-2xl mx-auto px-4 sm:px-8">
           <p style={{ fontFamily: MONO, fontSize: '0.56rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: '#00BFA6', marginBottom: 20 }}>
             // profile.md
           </p>
@@ -74,7 +74,7 @@ export default function AboutPage({ isDark }) {
       </div>
 
       {/* Main content — centered */}
-      <div className="max-w-3xl" style={{ margin: '0 auto', padding: '0 2rem 7rem', textAlign: 'center' }}>
+      <div className="max-w-3xl mx-auto px-4 sm:px-8 pb-28" style={{ textAlign: 'center' }}>
         <div style={{ height: 1, background: `linear-gradient(to right, transparent, #00BFA6, transparent)`, marginBottom: 72 }} />
 
         {/* Experience */}

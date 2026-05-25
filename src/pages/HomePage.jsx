@@ -1,11 +1,11 @@
+import { useEffect } from 'react';
 import HeroSection from '../components/hero/HeroSection';
-import BentoGrid from '../components/bento/BentoGrid';
 
 export default function HomePage({ isDark }) {
-  return (
-    <>
-      <HeroSection isDark={isDark} />
-      <BentoGrid isDark={isDark} />
-    </>
-  );
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, []);
+
+  return <HeroSection isDark={isDark} />;
 }
