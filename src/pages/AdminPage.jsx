@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { store } from '../lib/contentStore';
 import { supabase, BUCKET } from '../lib/supabase';
+import { renderMd } from '../lib/markdown';
 
 const GARAMOND = "'Cormorant Garamond', Georgia, serif";
 const SANS     = "'DM Sans', system-ui, sans-serif";
@@ -656,6 +657,146 @@ function PagesSection() {
   );
 }
 
+// ─── ABOUT SECTION ────────────────────────────────────────────────────────────
+function MdPreview({ text }) {
+  if (!text) return null;
+  return (
+    <div
+      style={{
+        background: '#F9FAFB', border: '1px solid #E5E5E5', borderRadius: 8,
+        padding: '14px 18px', marginTop: 8,
+        fontFamily: "'JetBrains Mono', monospace", fontSize: '0.82rem', lineHeight: 1.7,
+        color: '#555',
+      }}
+      dangerouslySetInnerHTML={{ __html: renderMd(text) }}
+    />
+  );
+}
+
+const ABOUT_HINT = {
+  display: 'block',
+  fontFamily: "'JetBrains Mono', monospace",
+  fontSize: '0.68rem',
+  letterSpacing: '0.08em',
+  color: '#aaa',
+  marginTop: 6,
+};
+
+function AboutSection() {
+  const [data,    setData]    = useState(store.getAbout);
+  const [saved,   setSaved]   = useState(false);
+  const [preview, setPreview] = useState(null);
+
+  const set = (key) => (val) => setData(d => ({ ...d, [key]: val }));
+
+  const saveAll = () => {
+    store.saveAbout(data);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2500);
+  };
+
+  const mdFields = [
+    {
+      key: 'intro',
+      label: 'Intro paragraphs',
+      hint: 'Supports **bold**, *italic*, [link text](url). Blank lines = new paragraph.',
+      rows: 7,
+    },
+    {
+      key: 'workingOn',
+      label: 'What I\'m working on',
+      hint: 'Use "- item" for bullet points. Links: [label](url).',
+      rows: 5,
+    },
+  ];
+
+  const elseFields = [
+    { key: 'photos', label: 'Everything else → Photos', rows: 4 },
+    { key: 'places', label: 'Everything else → Places', rows: 4 },
+    { key: 'food',   label: 'Everything else → Food',   rows: 4 },
+  ];
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+        <div>
+          <h2 style={{ fontFamily: GARAMOND, fontWeight: 300, fontSize: '1.8rem', fontStyle: 'italic', margin: 0 }}>
+            "hi im srinjoy" page
+          </h2>
+          <p style={{ fontFamily: SANS, fontSize: '0.8rem', color: '#999', margin: '6px 0 0' }}>
+            Edit all content in markdown. Changes appear live on the /all page.
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          {saved && <span style={{ fontFamily: SANS, fontSize: '0.8rem', color: '#00BFA6', fontWeight: 500 }}>Saved ✓</span>}
+          <button onClick={saveAll} style={btn(true)}>Save all</button>
+        </div>
+      </div>
+
+      {/* Main markdown fields */}
+      {mdFields.map(({ key, label, hint, rows }) => (
+        <div key={key} style={{ background: '#F9FAFB', border: '1px solid #E5E5E5', borderRadius: 12, padding: 24, marginBottom: 16 }}>
+          <Field label={label}>
+            <textarea
+              value={data[key] ?? ''}
+              onChange={e => set(key)(e.target.value)}
+              rows={rows}
+              style={{
+                ...input(), resize: 'vertical', lineHeight: 1.7,
+                fontFamily: MONO, fontSize: '0.82rem',
+              }}
+            />
+            {hint && <span style={ABOUT_HINT}>{hint}</span>}
+          </Field>
+          <button
+            type="button"
+            onClick={() => setPreview(prev => prev === key ? null : key)}
+            style={{ ...btn(), fontSize: '0.75rem', marginTop: 4 }}
+          >
+            {preview === key ? 'Hide preview' : 'Preview'}
+          </button>
+          {preview === key && <MdPreview text={data[key]} />}
+        </div>
+      ))}
+
+      {/* Divider */}
+      <div style={{ borderTop: '1px solid #E5E5E5', margin: '24px 0', paddingTop: 24 }}>
+        <p style={{ ...label, fontSize: '0.8rem', color: '#555', marginBottom: 16 }}>
+          "Everything else" sub-sections
+        </p>
+        <p style={{ fontFamily: SANS, fontSize: '0.8rem', color: '#aaa', marginBottom: 20, lineHeight: 1.6 }}>
+          These appear as expandable sub-sections under the "everything else" accordion on the page. Use markdown — headings (#, ##), lists (- item), links ([text](url)), **bold**, *italic*.
+        </p>
+      </div>
+
+      {/* Everything else fields */}
+      {elseFields.map(({ key, label: elseLabel, rows }) => (
+        <div key={key} style={{ background: '#F9FAFB', border: '1px solid #E5E5E5', borderRadius: 12, padding: 24, marginBottom: 16 }}>
+          <Field label={elseLabel}>
+            <textarea
+              value={data[key] ?? ''}
+              onChange={e => set(key)(e.target.value)}
+              rows={rows}
+              style={{
+                ...input(), resize: 'vertical', lineHeight: 1.7,
+                fontFamily: MONO, fontSize: '0.82rem',
+              }}
+            />
+          </Field>
+          <button
+            type="button"
+            onClick={() => setPreview(prev => prev === key ? null : key)}
+            style={{ ...btn(), fontSize: '0.75rem', marginTop: 4 }}
+          >
+            {preview === key ? 'Hide preview' : 'Preview'}
+          </button>
+          {preview === key && <MdPreview text={data[key]} />}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ─── ALBUM SECTION (Supabase-backed camera roll) ──────────────────────────────
 function AlbumSection() {
   const [photos,   setPhotos]   = useState([]);
@@ -815,15 +956,16 @@ function AlbumSection() {
 
 // ─── Dashboard shell ──────────────────────────────────────────────────────────
 const TABS = [
+  { id: 'about',  label: 'About page'   },
   { id: 'blog',   label: 'Writing'      },
   { id: 'work',   label: 'Work'         },
   { id: 'photos', label: 'Photography'  },
-  { id: 'pages',  label: 'Page text'    },
+  { id: 'pages',  label: 'Page headers' },
   { id: 'album',  label: 'Camera album' },
 ];
 
 function Dashboard({ onLogout }) {
-  const [tab, setTab] = useState('blog');
+  const [tab, setTab] = useState('about');
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', background: '#FAFAFA' }}>
@@ -863,6 +1005,7 @@ function Dashboard({ onLogout }) {
 
       {/* Main content */}
       <main style={{ flex: 1, padding: '48px 56px', maxWidth: 860, overflowY: 'auto' }}>
+        {tab === 'about'  && <AboutSection />}
         {tab === 'blog'   && <BlogSection />}
         {tab === 'work'   && <WorkSection />}
         {tab === 'photos' && <PhotosSection />}

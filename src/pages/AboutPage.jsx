@@ -1,176 +1,241 @@
-import { useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import anime from 'animejs';
-import ParticleField from '../components/hero/ParticleField';
-import { meta, experience, education, leadership, awards, currently } from '../data/profile';
+import { meta, experience, contact } from '../data/profile';
 
-const GARAMOND = "'Cormorant Garamond', Georgia, serif";
-const SANS = "'DM Sans', system-ui, sans-serif";
 const MONO = "'JetBrains Mono', monospace";
+const HAND = "'Caveat', cursive";
 
-function Rule({ isDark }) {
-  return <div style={{ height: 1, background: isDark ? '#2A2A2A' : '#E5E5E5', margin: '72px 0' }} />;
-}
-
-function SectionLabel({ text }) {
-  return (
-    <p style={{ fontFamily: MONO, fontSize: '0.56rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: '#00BFA6', marginBottom: 24, textAlign: 'center' }}>
-      {text}
-    </p>
-  );
-}
+const CUHK_URL = 'https://www.jockeyphpc.cuhk.edu.hk/en/home';
 
 export default function AboutPage({ isDark }) {
-  const textColor = isDark ? '#E8E8E8' : '#1A1A1A';
-  const muted = isDark ? '#888' : '#6B6B6B';
-  const border = isDark ? '#2A2A2A' : '#E5E5E5';
-  const cardBg = isDark ? '#141414' : '#F2F2F0';
-
-  const headingRef = useRef(null);
-
-  useEffect(() => {
-    if (headingRef.current) {
-      anime({
-        targets: headingRef.current.querySelectorAll('.about-letter'),
-        opacity: [0, 1],
-        translateY: [14, 0],
-        delay: anime.stagger(28, { start: 200 }),
-        duration: 500,
-        easing: 'easeOutQuart',
-      });
-    }
-  }, []);
+  const bg      = isDark ? '#0D0D0D' : '#FAFAF8';
+  const text    = isDark ? '#E0E0E0' : '#1A1A1A';
+  const muted   = isDark ? '#888' : '#555';
+  const divider = isDark ? '#2A2A2A' : '#E0E0E0';
 
   return (
-    <div className="min-h-screen w-full" style={{ color: textColor }}>
+    <div style={{ background: bg, minHeight: '100vh', color: text }}>
+      <style>{`
+        .about-link {
+          color: #00BFA6;
+          text-decoration: none;
+          position: relative;
+          display: inline-block;
+        }
+        .about-link::after {
+          content: '';
+          position: absolute;
+          bottom: -1px;
+          left: 0;
+          width: 0;
+          height: 1px;
+          background: #00BFA6;
+          transition: width 0.25s ease;
+        }
+        .about-link:hover::after {
+          width: 100%;
+        }
+        .about-link:hover {
+          color: #00d4b8;
+        }
 
-      {/* Hero header */}
-      <div style={{ position: 'relative', overflow: 'hidden', paddingTop: 100, paddingBottom: 72, textAlign: 'center' }}>
-        <div style={{ position: 'absolute', inset: 0, opacity: 0.08 }}>
-          <ParticleField isDark={isDark} />
-        </div>
-        <div className="relative z-10 max-w-2xl" style={{ margin: '0 auto', padding: '0 2rem' }}>
-          <p style={{ fontFamily: MONO, fontSize: '0.56rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: '#00BFA6', marginBottom: 20 }}>
-            // profile.md
+        .about-section-title {
+          font-family: ${MONO};
+          font-size: 1.35rem;
+          font-weight: 500;
+          margin: 0 0 1.4rem;
+          color: ${text};
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+        }
+
+        .about-para {
+          font-family: ${MONO};
+          font-size: 1rem;
+          line-height: 1.85;
+          color: ${muted};
+          margin: 0 0 1.4rem;
+        }
+
+        .work-item {
+          font-family: ${MONO};
+          font-size: 1rem;
+          line-height: 1.85;
+          color: ${muted};
+          margin: 0 0 0.55rem;
+        }
+
+        .prev-item {
+          padding: 1rem 0;
+          border-bottom: 1px solid ${divider};
+        }
+        .prev-item-period {
+          font-family: ${MONO};
+          font-size: 0.72rem;
+          color: ${muted};
+          margin: 0 0 0.25rem;
+          letter-spacing: 0.04em;
+        }
+        .prev-item-role {
+          font-family: ${MONO};
+          font-size: 1rem;
+          font-weight: 500;
+          color: ${text};
+          margin: 0 0 0.2rem;
+        }
+        .prev-item-org {
+          font-family: ${MONO};
+          font-size: 0.88rem;
+          color: #00BFA6;
+          margin: 0 0 0.4rem;
+        }
+        .prev-item-detail {
+          font-family: ${MONO};
+          font-size: 0.88rem;
+          line-height: 1.75;
+          color: ${muted};
+          margin: 0;
+        }
+
+        hr.about-rule {
+          border: none;
+          border-top: 1px solid ${divider};
+          margin: 2.8rem 0;
+        }
+      `}</style>
+
+      <div style={{
+        maxWidth: 680,
+        margin: '0 auto',
+        padding: 'clamp(4rem, 10vw, 6rem) clamp(1.5rem, 6vw, 3rem) 6rem',
+      }}>
+
+        {/* Big handwritten heading */}
+        <h1 style={{
+          fontFamily: HAND,
+          fontSize: 'clamp(3.2rem, 9vw, 5.5rem)',
+          fontWeight: 700,
+          lineHeight: 1.1,
+          margin: '0 0 2.4rem',
+          color: text,
+        }}>
+          hi im srinjoy
+        </h1>
+
+        {/* Intro paragraphs */}
+        <p className="about-para">
+          I'm in the Hong Kong SAR this summer, working with Real-World Data at{' '}
+          <a
+            className="about-link"
+            href={CUHK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            CUHK's Jockey PHPC
+          </a>
+          .
+        </p>
+
+        <p className="about-para">
+          Studying global markets of science and challenging the status quo on what
+          it means to <em>"truly"</em> commercialize saving lives.
+        </p>
+
+        <p className="about-para">
+          I love to stay fit, travel, and meet people. So{' '}
+          <a
+            className="about-link"
+            href={`mailto:${contact.email}`}
+          >
+            reach out
+          </a>
+          !
+        </p>
+
+        <hr className="about-rule" />
+
+        {/* What I'm working on */}
+        <section style={{ marginBottom: '2.8rem' }}>
+          <h2 className="about-section-title">
+            <span>💻</span> what i'm working on
+          </h2>
+
+          <p className="work-item">
+            Real-World Data Research @{' '}
+            <a
+              className="about-link"
+              href={CUHK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CUHK Jockey PHPC
+            </a>
           </p>
-          <div ref={headingRef} style={{ marginBottom: 28 }}>
-            {meta.name.split('').map((char, i) => (
-              <span key={i} className="about-letter" style={{
-                display: 'inline-block', opacity: 0,
-                fontFamily: GARAMOND, fontWeight: 300,
-                fontSize: 'clamp(2.4rem, 6vw, 4.5rem)',
-                letterSpacing: char === ' ' ? '0.15em' : '0.02em',
-                color: char === ' ' ? 'transparent' : textColor,
-                lineHeight: 1.1, fontStyle: 'italic',
-              }}>
-                {char === ' ' ? '\u00A0' : char}
-              </span>
-            ))}
-          </div>
-          <p style={{ fontFamily: SANS, fontWeight: 300, fontSize: 'clamp(0.95rem, 1.5vw, 1.05rem)', lineHeight: 2, color: muted, maxWidth: 520, margin: '0 auto' }}>
-            {meta.heroBio}
+          <p className="work-item">
+            Investment Analyst @{' '}
+            <a
+              className="about-link"
+              href="https://www.balyasny.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Balyasny Asset Management
+            </a>
           </p>
-        </div>
-      </div>
+          <p className="work-item">
+            Organ-on-a-chip research @{' '}
+            <a
+              className="about-link"
+              href="https://minimedicine.seas.upenn.edu"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MiNiMedicine Lab
+            </a>
+          </p>
+        </section>
 
-      {/* Main content — centered */}
-      <div className="max-w-3xl" style={{ margin: '0 auto', padding: '0 2rem 7rem', textAlign: 'center' }}>
-        <div style={{ height: 1, background: `linear-gradient(to right, transparent, #00BFA6, transparent)`, marginBottom: 72 }} />
+        <hr className="about-rule" />
 
-        {/* Experience */}
-        <motion.section initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-          <SectionLabel text="Experience" />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
-            {experience.map((exp, i) => (
-              <motion.div key={i}
-                initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.4 }}
-              >
-                <p style={{ fontFamily: MONO, fontSize: '0.58rem', color: muted, marginBottom: 6, letterSpacing: '0.08em' }}>
-                  {exp.period}
-                </p>
-                <p style={{ fontFamily: MONO, fontSize: '0.6rem', color: '#00BFA6', marginBottom: 10, letterSpacing: '0.1em' }}>
-                  {exp.org}
-                </p>
-                <p style={{ fontFamily: GARAMOND, fontWeight: 600, fontSize: '1.25rem', color: textColor, marginBottom: 16 }}>
-                  {exp.role}
-                </p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-                  {exp.bullets.map((b, j) => (
-                    <p key={j} style={{ fontFamily: SANS, fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.8, color: muted, maxWidth: 540 }}>
-                      {b}
-                    </p>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
+        {/* Previously */}
+        <section>
+          <h2 className="about-section-title">
+            <span>⬅</span> previously
+          </h2>
 
-        <Rule isDark={isDark} />
+          {experience.slice(1).map((exp, i) => (
+            <div className="prev-item" key={i}>
+              <p className="prev-item-period">{exp.period}</p>
+              <p className="prev-item-role">{exp.role}</p>
+              <p className="prev-item-org">{exp.org}</p>
+              {exp.bullets.map((b, j) => (
+                <p className="prev-item-detail" key={j}>{b}</p>
+              ))}
+            </div>
+          ))}
+        </section>
 
-        {/* Education */}
-        <motion.section initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-          <SectionLabel text="Education" />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {education.map((ed, i) => (
-              <div key={i} style={{ background: cardBg, border: `1px solid ${border}`, borderRadius: 12, padding: '28px 24px' }}>
-                <p style={{ fontFamily: MONO, fontSize: '0.58rem', color: muted, marginBottom: 8 }}>{ed.year}</p>
-                <p style={{ fontFamily: GARAMOND, fontWeight: 600, fontSize: '1.3rem', color: textColor, marginBottom: 8 }}>{ed.school}</p>
-                <p style={{ fontFamily: SANS, fontWeight: 400, fontSize: '0.9rem', color: '#00BFA6', marginBottom: 8 }}>{ed.degree}</p>
-                <p style={{ fontFamily: SANS, fontWeight: 300, fontSize: '0.88rem', lineHeight: 1.7, color: muted }}>{ed.detail}</p>
-              </div>
-            ))}
-          </div>
-        </motion.section>
+        <hr className="about-rule" />
 
-        <Rule isDark={isDark} />
-
-        {/* Leadership */}
-        <motion.section initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-          <SectionLabel text="Leadership" />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-            {leadership.map((l, i) => (
-              <div key={i} style={{ padding: '24px 0', borderBottom: `1px solid ${border}` }}>
-                <p style={{ fontFamily: MONO, fontSize: '0.58rem', color: muted, marginBottom: 6, letterSpacing: '0.08em' }}>{l.period}</p>
-                <p style={{ fontFamily: GARAMOND, fontWeight: 600, fontSize: '1.2rem', color: textColor, marginBottom: 4 }}>{l.role}</p>
-                <p style={{ fontFamily: MONO, fontSize: '0.6rem', color: '#00BFA6', marginBottom: 12, letterSpacing: '0.08em' }}>{l.org}</p>
-                <p style={{ fontFamily: SANS, fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.8, color: muted, maxWidth: 520, margin: '0 auto' }}>{l.detail}</p>
-              </div>
-            ))}
-          </div>
-        </motion.section>
-
-        <Rule isDark={isDark} />
-
-        {/* Awards */}
-        <motion.section initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-          <SectionLabel text="Awards" />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {awards.map((a, i) => (
-              <div key={i} style={{ background: isDark ? '#0D1F1E' : '#F0FDFB', border: '1px solid rgba(0,191,166,0.22)', borderRadius: 12, padding: '24px' }}>
-                <p style={{ fontFamily: MONO, fontSize: '0.58rem', color: muted, marginBottom: 8 }}>{a.date}</p>
-                <p style={{ fontFamily: GARAMOND, fontWeight: 600, fontSize: '1.15rem', color: textColor, marginBottom: 10 }}>{a.title}</p>
-                <p style={{ fontFamily: SANS, fontWeight: 300, fontSize: '0.9rem', lineHeight: 1.8, color: muted, maxWidth: 500, margin: '0 auto' }}>{a.detail}</p>
-              </div>
-            ))}
-          </div>
-        </motion.section>
-
-        <Rule isDark={isDark} />
-
-        {/* Currently */}
-        <motion.section initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-          <SectionLabel text="Currently" />
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-            {currently.map(item => (
-              <div key={item.key}>
-                <p style={{ fontFamily: MONO, fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: muted, marginBottom: 10 }}>{item.key}</p>
-                <p style={{ fontFamily: SANS, fontWeight: 300, fontSize: '0.95rem', lineHeight: 1.8, color: textColor }}>{item.value}</p>
-              </div>
-            ))}
-          </div>
-        </motion.section>
+        {/* Connect */}
+        <p className="about-para" style={{ marginBottom: 0 }}>
+          Find me on{' '}
+          <a
+            className="about-link"
+            href={contact.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LinkedIn
+          </a>
+          {' '}or send a note to{' '}
+          <a
+            className="about-link"
+            href={`mailto:${contact.email}`}
+          >
+            {contact.email}
+          </a>
+          .
+        </p>
       </div>
     </div>
   );

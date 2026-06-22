@@ -189,6 +189,7 @@ export default function HeroSection({ isDark }) {
     >
       {/* Protein — fades in after scramble resolves (instant on return visits) */}
       <motion.div
+        initial={{ opacity: alreadySeen ? (isDark ? 0.68 : 0.42) : 0 }}
         animate={{ opacity: revealed ? (isDark ? 0.68 : 0.42) : 0 }}
         transition={{ duration: alreadySeen ? 0 : 2.5, ease: 'easeOut' }}
         style={{ position: 'absolute', inset: 0, cursor: 'crosshair' }}
