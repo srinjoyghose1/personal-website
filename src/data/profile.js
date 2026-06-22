@@ -10,11 +10,15 @@ export const meta = {
   heroBio: 'Roy and Diana Vagelos Scholar at the University of Pennsylvania — Wharton Economics and Biological Mathematics. Working at the intersection of biomedical engineering, computational biology, and capital markets.',
   // Two paragraphs shown on the home page About section
   homeBio: [
-    "LSM student at UPenn studying Finance and Statistics at Wharton and Neurosceince",
+    "LSM student at UPenn studying Finance and Statistics at Wharton and Neuroscience",
     "I want to cure disease, I study ways to make processes of curing disease more streamlined, and how curing disease can be fundraised in complex international markets",
   ],
   // Home page contact blurb
   contactBlurb: 'Love to talk, feel free to reach out!',
+  // Below-hero statement section
+  location: 'Based in the Hong Kong SAR this summer.',
+  homeStatement: 'Studying global markets of science and challenging the status quo on what it means to truly commercialize saving lives.',
+  homePersonal: 'I love to stay fit, travel, and meet people.',
 };
 
 export const contact = {

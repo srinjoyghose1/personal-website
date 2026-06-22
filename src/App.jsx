@@ -1,30 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
+import { Routes, Route } from 'react-router-dom';
+import { motion, useScroll, useSpring } from 'framer-motion';
 import { useDarkMode } from './hooks/useDarkMode';
 import NavMenu from './components/nav/NavMenu';
 import HomePage from './pages/HomePage';
-import ResearchPage from './pages/ResearchPage';
-import BlogPage from './pages/BlogPage';
-import PhotographyPage from './pages/PhotographyPage';
-import ContactPage from './pages/ContactPage';
+import EverythingPage from './pages/EverythingPage';
 import AboutPage from './pages/AboutPage';
 import ProteinDeepDivePage from './pages/ProteinDeepDivePage';
 import AdminPage from './pages/AdminPage';
 
 const PageWrapper = ({ children, isDark }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -8 }}
-    transition={{ duration: 0.32, ease: 'easeOut' }}
+  <div
     style={{
-      background: isDark ? '#0D0D0D' : '#FFFFFF',
+      background: isDark ? '#0D0D0D' : '#FAFAF8',
       minHeight: '100vh',
     }}
   >
     {children}
-  </motion.div>
+  </div>
 );
 
 function CustomCursor() {
@@ -108,54 +101,36 @@ function ScrollProgress() {
 
 export default function App() {
   const { isDark, toggle } = useDarkMode();
-  const location = useLocation();
 
   return (
-    <div style={{ background: isDark ? '#0D0D0D' : '#FFFFFF', minHeight: '100vh' }}>
+    <div style={{ background: isDark ? '#0D0D0D' : '#FAFAF8', minHeight: '100vh' }}>
       <ScrollProgress />
       <CustomCursor />
       <NavMenu isDark={isDark} onToggleDark={toggle} />
 
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={
-            <PageWrapper isDark={isDark}>
-              <HomePage isDark={isDark} />
-            </PageWrapper>
-          } />
-          <Route path="/about" element={
-            <PageWrapper isDark={isDark}>
-              <AboutPage isDark={isDark} />
-            </PageWrapper>
-          } />
-          <Route path="/work" element={
-            <PageWrapper isDark={isDark}>
-              <ResearchPage isDark={isDark} />
-            </PageWrapper>
-          } />
-          <Route path="/blog" element={
-            <PageWrapper isDark={isDark}>
-              <BlogPage isDark={isDark} />
-            </PageWrapper>
-          } />
-          <Route path="/photography" element={
-            <PageWrapper isDark={isDark}>
-              <PhotographyPage isDark={isDark} />
-            </PageWrapper>
-          } />
-          <Route path="/contact" element={
-            <PageWrapper isDark={isDark}>
-              <ContactPage isDark={isDark} />
-            </PageWrapper>
-          } />
-          <Route path="/protein" element={
-            <PageWrapper isDark={isDark}>
-              <ProteinDeepDivePage isDark={isDark} />
-            </PageWrapper>
-          } />
-          <Route path="/admin" element={<AdminPage />} />
-        </Routes>
-      </AnimatePresence>
+      <Routes>
+        <Route path="/" element={
+          <PageWrapper isDark={isDark}>
+            <HomePage isDark={isDark} />
+          </PageWrapper>
+        } />
+        <Route path="/all" element={
+          <PageWrapper isDark={isDark}>
+            <EverythingPage isDark={isDark} />
+          </PageWrapper>
+        } />
+        <Route path="/about" element={
+          <PageWrapper isDark={isDark}>
+            <AboutPage isDark={isDark} />
+          </PageWrapper>
+        } />
+        <Route path="/protein" element={
+          <PageWrapper isDark={isDark}>
+            <ProteinDeepDivePage isDark={isDark} />
+          </PageWrapper>
+        } />
+        <Route path="/admin" element={<AdminPage />} />
+      </Routes>
     </div>
   );
 }

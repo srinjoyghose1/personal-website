@@ -18,11 +18,10 @@ export default function ProteinViewer({ isDark }) {
       }
 
       if (viewerRef.current) {
-        try { viewerRef.current.spin(false); } catch (_) {}
         el.innerHTML = '';
       }
 
-      const bgColor = isDark ? '#0D0D0D' : '#FFFFFF';
+      const bgColor = isDark ? '#0D0D0D' : '#FAFAF8';
 
       const viewer = window.$3Dmol.createViewer(el, {
         backgroundColor: bgColor,
@@ -49,24 +48,43 @@ export default function ProteinViewer({ isDark }) {
 
         viewer.zoomTo();
         viewer.render();
-        viewer.spin('y', 0.55);
+        viewer.spin('y', 0.85);
       });
     };
 
     init();
 
-    return () => {
-      cancelled = true;
-      if (viewerRef.current) {
-        try { viewerRef.current.spin(false); } catch (_) {}
-      }
-    };
+    return () => { cancelled = true; };
   }, [isDark]);
 
   return (
-    <div
-      ref={containerRef}
-      style={{ width: '100%', height: '100%', position: 'relative' }}
-    />
+    <>
+      <style>{`
+        @keyframes protein-float {
+          0%   { transform: translate3d(-1.2%, 0.8%, 0) scale(1.03) rotate(-0.4deg); }
+          35%  { transform: translate3d(1.1%, -1.4%, 0) scale(1.055) rotate(0.3deg); }
+          70%  { transform: translate3d(0.4%, 1.1%, 0) scale(1.035) rotate(0.6deg); }
+          100% { transform: translate3d(-1.2%, 0.8%, 0) scale(1.03) rotate(-0.4deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .protein-viewer-motion {
+            animation: none !important;
+          }
+        }
+      `}</style>
+      <div
+        ref={containerRef}
+        className="protein-viewer-motion"
+        style={{
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+          transformOrigin: '50% 50%',
+          animation: 'protein-float 18s ease-in-out infinite',
+          willChange: 'transform',
+        }}
+      />
+    </>
   );
 }

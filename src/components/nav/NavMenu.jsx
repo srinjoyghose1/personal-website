@@ -1,27 +1,56 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useDarkMode } from '../../hooks/useDarkMode';
-
-const links = [
-  { label: '/', href: '/' },
-  { label: '/work', href: '/work' },
-  { label: '/writing', href: '/blog' },
-  { label: '/photos', href: '/photography' },
-  { label: '/contact', href: '/contact' },
-];
+import { motion } from 'framer-motion';
 
 export default function NavMenu({ isDark, onToggleDark }) {
   const location = useLocation();
-  const textColor = isDark ? '#E8E8E8' : '#1A1A1A';
+  const isHome = location.pathname === '/';
+
+  const navLabel = isHome ? '/' : '\\';
+  const navHref  = isHome ? '/all' : '/';
+  const navColor = isHome ? '#00BFA6' : '#8B1A1A';
 
   return (
     <>
+      <style>{`
+        .admin-dashboard-link {
+          opacity: 0.08;
+        }
+
+        .admin-dashboard-link:hover,
+        .admin-dashboard-link:focus-visible {
+          opacity: 0.62;
+        }
+      `}</style>
+
+      <Link
+        to="/admin"
+        title="Admin dashboard"
+        aria-label="Open admin dashboard"
+        className="admin-dashboard-link"
+        style={{
+          position: 'fixed',
+          top: 18,
+          left: 18,
+          zIndex: 50,
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: '0.62rem',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: isDark ? '#E8E8E8' : '#1A1A1A',
+          textDecoration: 'none',
+          transition: 'opacity 0.18s ease, color 0.18s ease',
+        }}
+      >
+        admin
+      </Link>
+
       {/* Dark mode toggle — top right */}
       <div className="fixed top-5 right-6 z-50">
         <button
           onClick={onToggleDark}
           title="Toggle dark mode"
           style={{
-            background: isDark ? '#1A1A1A' : '#FAFAFA',
+            background: isDark ? '#1A1A1A' : '#FAFAF8',
             border: `1px solid ${isDark ? '#2A2A2A' : '#E5E5E5'}`,
             color: isDark ? '#E8E8E8' : '#1A1A1A',
           }}
@@ -31,7 +60,7 @@ export default function NavMenu({ isDark, onToggleDark }) {
         </button>
       </div>
 
-      {/* Always-visible left sidebar nav */}
+      {/* Single toggle nav item — delayed on home so it appears after scramble */}
       <nav
         style={{
           position: 'fixed',
@@ -39,44 +68,35 @@ export default function NavMenu({ isDark, onToggleDark }) {
           top: '50%',
           transform: 'translateY(-50%)',
           zIndex: 50,
-          display: 'flex',
-          flexDirection: 'column',
         }}
       >
-        {links.map(link => {
-          const active = location.pathname === link.href;
-          return (
-            <Link
-              key={link.href}
-              to={link.href}
-              style={{
-                display: 'block',
-                fontFamily: "'Space Mono', monospace",
-                fontSize: 'clamp(1rem, 2vw, 1.6rem)',
-                fontWeight: 700,
-                letterSpacing: '-0.01em',
-                lineHeight: 1.65,
-                color: active ? '#00BFA6' : textColor,
-                opacity: active ? 1 : 0.38,
-                textDecoration: 'none',
-                transition: 'opacity 0.15s, color 0.15s',
-              }}
-              onMouseEnter={e => { if (!active) e.currentTarget.style.opacity = '0.75'; }}
-              onMouseLeave={e => { if (!active) e.currentTarget.style.opacity = '0.38'; }}
-            >
-              {link.label}
-            </Link>
-          );
-        })}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            delay: (isHome && sessionStorage.getItem('hero_seen') !== 'true') ? 2.2 : 0,
+            duration: 0.6,
+          }}
+        >
+          <Link
+            to={navHref}
+            style={{
+              display: 'block',
+              fontFamily: "'Space Mono', monospace",
+              fontSize: 'clamp(1.8rem, 3.8vw, 3.1rem)',
+              fontWeight: 700,
+              letterSpacing: '-0.01em',
+              lineHeight: 1,
+              color: navColor,
+              textDecoration: 'none',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.opacity = '0.7'; }}
+            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
+          >
+            {navLabel}
+          </Link>
+        </motion.div>
       </nav>
-
-      {/* Identity mark — bottom left */}
-      <div
-        className="fixed bottom-1 left-6 z-50 font-mono text-xs tracking-widest uppercase"
-        style={{ color: isDark ? '#444' : '#CCC' }}
-      >
-        SG / {new Date().getFullYear()}
-      </div>
     </>
   );
 }

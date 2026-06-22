@@ -233,11 +233,54 @@ function BlogEditor({ onClose, initial, onSave, categories, onAddCategory }) {
   );
 }
 
+// ─── LINKS EDITOR ────────────────────────────────────────────────────────────
+function LinksEditor({ value, onChange }) {
+  const links = value ?? [];
+
+  const add    = ()       => onChange([...links, { label: '', url: '' }]);
+  const remove = (i)      => onChange(links.filter((_, idx) => idx !== i));
+  const update = (i, field, val) => onChange(
+    links.map((l, idx) => idx === i ? { ...l, [field]: val } : l)
+  );
+
+  return (
+    <div>
+      {links.map((link, i) => (
+        <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'center' }}>
+          <input
+            value={link.label ?? ''}
+            onChange={e => update(i, 'label', e.target.value)}
+            placeholder="Label"
+            style={{ ...input(), flex: '0 0 36%' }}
+          />
+          <input
+            value={link.url ?? ''}
+            onChange={e => update(i, 'url', e.target.value)}
+            placeholder="https://…"
+            style={{ ...input({ fontFamily: MONO, fontSize: '0.8rem' }), flex: 1 }}
+          />
+          <button
+            type="button"
+            onClick={() => remove(i)}
+            style={{ ...btn(false, true), padding: '9px 12px', flexShrink: 0 }}
+          >
+            ×
+          </button>
+        </div>
+      ))}
+      <button type="button" onClick={add} style={{ ...btn(), fontSize: '0.78rem' }}>
+        + Add link
+      </button>
+    </div>
+  );
+}
+
 // ─── WORK EDITOR ─────────────────────────────────────────────────────────────
 function WorkEditor({ onClose, initial, onSave }) {
   const [form, setForm] = useState(initial ?? {
     title: '', date: '', abstract: '', category: 'Research',
     findings: '', institution: '', photo: '', link: '', published: false,
+    links: [],
   });
   const set = (k) => (v) => setForm(f => ({ ...f, [k]: v }));
 
@@ -287,6 +330,9 @@ function WorkEditor({ onClose, initial, onSave }) {
       <Field label="Findings / Details"><TextArea value={form.findings} onChange={set('findings')} rows={4} /></Field>
       <Field label="Photo"><ImageInput value={form.photo} onChange={set('photo')} /></Field>
       <Field label="Link (URL)"><TextInput value={form.link} onChange={set('link')} placeholder="https://…" mono /></Field>
+      <Field label="Quick links (shown on double-click in card)">
+        <LinksEditor value={form.links} onChange={set('links')} />
+      </Field>
       <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
         <button onClick={() => onSave(form)} style={btn(true)}>Save item</button>
         <button onClick={onClose} style={btn()}>Cancel</button>

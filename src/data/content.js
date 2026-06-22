@@ -6,6 +6,11 @@ export const researchProjects = [
     abstract: 'Founded and led a project developing a programmable bioreactor that uses mechanical strain and chemical co-stimulation to tailor stem cell proliferation for patient-specific needs — a scalable, cost-effective alternative to static culture systems.',
     category: 'Research',
     findings: 'Demonstrated tunable differentiation outcomes via strain frequency and growth factor co-stimulation. Platform scalable to 96-well format. Developed at MiNiMedicine Biomedical Engineering Lab.',
+    links: [
+      { label: 'MiNiMedicine Lab', url: 'https://be.seas.upenn.edu/labs/minimedicine/' },
+      { label: 'Bioreactor design overview', url: '#bioreactor-design' },
+      { label: 'Stimulation protocol notes', url: '#protocol-notes' },
+    ],
   },
   {
     id: 2,
@@ -14,6 +19,11 @@ export const researchProjects = [
     abstract: 'Engineered a microfluidic device replicating the biomechanics, fluid dynamics, and cellular architecture of the human optic nerve head — a sustainable preclinical alternative to in vivo rat models for glaucoma and neurodegeneration research.',
     category: 'Research',
     findings: 'Model reproduces intraocular pressure dynamics and astrocyte morphology consistent with ex vivo tissue. Undergoing validation against rat model benchmarks.',
+    links: [
+      { label: 'MiNiMedicine Lab', url: 'https://be.seas.upenn.edu/labs/minimedicine/' },
+      { label: 'Organ-on-chip model architecture', url: '#ooc-architecture' },
+      { label: 'Glaucoma research context', url: '#glaucoma-context' },
+    ],
   },
   {
     id: 3,
@@ -22,6 +32,11 @@ export const researchProjects = [
     abstract: 'Developed a deep learning pipeline to denoise immunofluorescence microscopy images, enabling higher-fidelity alignment analysis of cytoskeletal and nuclear markers in mechanically stimulated stem cells.',
     category: 'Research',
     findings: '75% reduction in shot noise while preserving subcellular feature fidelity. Model generalized across three antibody stain channels.',
+    links: [
+      { label: 'Framework methodology', url: '#ml-methodology' },
+      { label: 'Noise reduction benchmark', url: '#benchmark-results' },
+      { label: 'GitHub repository', url: '#github-repo' },
+    ],
   },
 ];
 
@@ -34,6 +49,11 @@ export const theses = [
     category: 'Investment Theses',
     findings: 'Member of BAM\'s inaugural intercollegiate investor cohort managing a selected $100k portfolio.',
     institution: 'Balyasny Asset Management',
+    links: [
+      { label: 'BAM ICI Program', url: 'https://balyasny.com/careers/collegiate-investors/' },
+      { label: 'Healthcare pod coverage', url: '#healthcare-coverage' },
+      { label: 'Vertical SaaS thesis notes', url: '#vsaas-thesis' },
+    ],
   },
   {
     id: 5,
@@ -43,6 +63,11 @@ export const theses = [
     category: 'Investment Theses',
     findings: '~30% upside to market price under base-case penetration assumptions; licensing optionality represented 18% of intrinsic value.',
     institution: 'WITG × Point72 Case Competition',
+    links: [
+      { label: 'WITG × Point72 competition', url: '#witg-point72' },
+      { label: 'DCF model assumptions', url: '#ev-dcf-model' },
+      { label: 'Competition presentation', url: '#ev-presentation' },
+    ],
   },
   {
     id: 6,
@@ -52,6 +77,11 @@ export const theses = [
     category: 'Community',
     findings: 'IP portfolio analysis revealed 3 defensible platform differentiators. FDA/HHS policy risk flagged as primary headwind. Linked transaction structure to new entrant U.S. and Chinese biotech dynamics.',
     institution: 'Penn Undergraduate Biotechnology Society',
+    links: [
+      { label: 'PUBS consulting team', url: '#pubs-consulting' },
+      { label: 'Acquisition report summary', url: '#mrna-acquisition' },
+      { label: 'Deal benchmarking framework', url: '#deal-benchmarks' },
+    ],
   },
   {
     id: 7,
@@ -61,6 +91,11 @@ export const theses = [
     category: 'Projects',
     findings: 'Preliminary: HKEX Chapter 18A listings show significantly higher post-IPO volatility relative to NASDAQ biotech comparables. $6,500 Wharton Research Award.',
     institution: 'Wharton Research Assistantship Program',
+    links: [
+      { label: 'Wharton RAP overview', url: 'https://research.wharton.upenn.edu/undergraduate-research/' },
+      { label: 'HKEX Chapter 18A analysis', url: '#hkex-18a' },
+      { label: 'HK biotech IPO dataset', url: '#hk-biotech-data' },
+    ],
   },
 ];
 

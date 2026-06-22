@@ -212,7 +212,7 @@ export default function ProteinDeepDivePage({ isDark }) {
           height: 40,
           borderRadius: 8,
           border: `1px solid ${isDark ? 'rgba(232,232,232,0.18)' : 'rgba(26,26,26,0.16)'}`,
-          background: isDark ? 'rgba(5,5,5,0.64)' : 'rgba(255,255,255,0.72)',
+          background: isDark ? 'rgba(5,5,5,0.64)' : 'rgba(250,250,248,0.72)',
           color: isDark ? '#E8E8E8' : '#1A1A1A',
           cursor: 'pointer',
           fontSize: 26,
@@ -265,7 +265,7 @@ export default function ProteinDeepDivePage({ isDark }) {
           padding: 10,
           borderRadius: 10,
           border: `1px solid ${isDark ? 'rgba(232,232,232,0.12)' : 'rgba(26,26,26,0.12)'}`,
-          background: isDark ? 'rgba(5,5,5,0.68)' : 'rgba(255,255,255,0.72)',
+          background: isDark ? 'rgba(5,5,5,0.68)' : 'rgba(250,250,248,0.72)',
           backdropFilter: 'blur(14px)',
         }}
       >

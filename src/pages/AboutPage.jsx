@@ -24,7 +24,7 @@ export default function AboutPage({ isDark }) {
   const textColor = isDark ? '#E8E8E8' : '#1A1A1A';
   const muted = isDark ? '#888' : '#6B6B6B';
   const border = isDark ? '#2A2A2A' : '#E5E5E5';
-  const cardBg = isDark ? '#141414' : '#FAFAFA';
+  const cardBg = isDark ? '#141414' : '#F2F2F0';
 
   const headingRef = useRef(null);
 
