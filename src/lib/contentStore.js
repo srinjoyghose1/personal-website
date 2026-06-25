@@ -13,21 +13,23 @@ const KEYS = {
 export { KEYS };
 
 const ABOUT_DEFAULTS = {
-  intro: `I'm in the Hong Kong SAR this summer, working with Real-World Data at [CUHK's Jockey PHPC](https://www.jockeyphpc.cuhk.edu.hk/en/home).
+  intro: `I'm in the Hong Kong SAR this summer, working with Real-World Data at [CUHK's Jockey PHPC](https://www.jockeyphpc.cuhk.edu.hk/en/home).`,
 
-Studying global markets of science and challenging the status quo on what it means to *"truly"* commercialize saving lives.
+  aboutMe: `Studying global markets of science and challenging the status quo on what it means to *"truly"* commercialize saving lives.\n\nI love to stay fit, travel, and meet people. So [reach out](mailto:srinnghose@gmail.com)!`,
 
-I love to stay fit, travel, and meet people. So [reach out](mailto:srinnghose@gmail.com)!`,
+  workingOnSections: [
+    {
+      id: 1,
+      name: 'current positions',
+      content: `- Real-World Data Research @ [CUHK Jockey PHPC](https://www.jockeyphpc.cuhk.edu.hk/en/home)\n- Investment Analyst @ [Balyasny Asset Management](https://www.balyasny.com)\n- Organ-on-a-chip research @ [MiNiMedicine Lab](https://minimedicine.seas.upenn.edu)`,
+    },
+  ],
 
-  workingOn: `- Real-World Data Research @ [CUHK Jockey PHPC](https://www.jockeyphpc.cuhk.edu.hk/en/home)
-- Investment Analyst @ [Balyasny Asset Management](https://www.balyasny.com)
-- Organ-on-a-chip research @ [MiNiMedicine Lab](https://minimedicine.seas.upenn.edu)`,
-
-  photos: `*Coming soon* — photos from Hong Kong, Kolkata, and the lab.`,
-
-  places: `*Coming soon* — favorite spots, cities, and places worth visiting.`,
-
-  food: `*Coming soon* — restaurants, street food, and things worth eating.`,
+  everythingSections: [
+    { id: 2, name: 'photos', content: `*Coming soon* — photos from Hong Kong, Kolkata, and the lab.` },
+    { id: 3, name: 'places', content: `*Coming soon* — favorite spots, cities, and places worth visiting.` },
+    { id: 4, name: 'food',   content: `*Coming soon* — restaurants, street food, and things worth eating.` },
+  ],
 };
 
 const PAGE_DEFAULTS = {

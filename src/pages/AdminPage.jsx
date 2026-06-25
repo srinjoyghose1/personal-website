@@ -673,19 +673,103 @@ function MdPreview({ text }) {
   );
 }
 
-const ABOUT_HINT = {
-  display: 'block',
-  fontFamily: "'JetBrains Mono', monospace",
-  fontSize: '0.68rem',
-  letterSpacing: '0.08em',
-  color: '#aaa',
-  marginTop: 6,
-};
+function SubsectionEditor({ onClose, initial, onSave }) {
+  const [form, setForm] = useState(initial ?? { name: '', content: '' });
+  const [preview, setPreview] = useState(false);
+  const set = (k) => (v) => setForm(f => ({ ...f, [k]: v }));
+
+  return (
+    <div style={{ background: '#fff', border: '1px solid #D8D8D8', borderRadius: 8, padding: 20, marginBottom: 12 }}>
+      <Field label="Subsection name">
+        <TextInput value={form.name} onChange={set('name')} placeholder="e.g. current positions" />
+      </Field>
+      <Field label="Content (markdown)">
+        <textarea
+          value={form.content ?? ''}
+          onChange={e => set('content')(e.target.value)}
+          rows={5}
+          placeholder="Use **bold**, *italic*, - bullet lists, [links](url)…"
+          style={{ ...input(), resize: 'vertical', lineHeight: 1.7, fontFamily: MONO, fontSize: '0.82rem' }}
+        />
+      </Field>
+      <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
+        <button onClick={() => onSave(form)} style={btn(true)}>Save</button>
+        <button type="button" onClick={() => setPreview(p => !p)} style={{ ...btn(), fontSize: '0.75rem' }}>
+          {preview ? 'Hide preview' : 'Preview'}
+        </button>
+        <button onClick={onClose} style={btn()}>Cancel</button>
+      </div>
+      {preview && <MdPreview text={form.content} />}
+    </div>
+  );
+}
+
+function SubsectionListPanel({ title, sections, onChange }) {
+  const [editing, setEditing] = useState(null);
+
+  const save = (form) => {
+    const next = editing === 'new'
+      ? [...sections, { ...form, id: Date.now() }]
+      : sections.map(s => s.id === editing.id ? { ...editing, ...form } : s);
+    onChange(next);
+    setEditing(null);
+  };
+
+  const del = (id) => onChange(sections.filter(s => s.id !== id));
+
+  return (
+    <div style={{ background: '#F9FAFB', border: '1px solid #E5E5E5', borderRadius: 12, padding: 24, marginBottom: 16 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: sections.length > 0 || editing === 'new' ? 16 : 0 }}>
+        <p style={{ ...label, fontSize: '0.78rem', color: '#555', margin: 0 }}>{title}</p>
+        <button onClick={() => setEditing('new')} style={{ ...btn(true), fontSize: '0.78rem', padding: '7px 14px' }}>
+          + Add subsection
+        </button>
+      </div>
+
+      {editing === 'new' && (
+        <SubsectionEditor onClose={() => setEditing(null)} onSave={save} />
+      )}
+
+      {sections.length === 0 && editing !== 'new' && (
+        <p style={{ fontFamily: SANS, fontSize: '0.85rem', color: '#ccc', margin: '12px 0 0', textAlign: 'center', padding: '12px 0' }}>
+          No subsections yet.
+        </p>
+      )}
+
+      {sections.map(sec => (
+        <div key={sec.id}>
+          {editing?.id === sec.id && (
+            <SubsectionEditor initial={sec} onClose={() => setEditing(null)} onSave={save} />
+          )}
+          {editing?.id !== sec.id && (
+            <ItemRow title={sec.name} onEdit={() => setEditing(sec)} onDelete={() => del(sec.id)} />
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function migrateAbout(raw) {
+  const data = { ...raw };
+  if (!data.workingOnSections) {
+    data.workingOnSections = data.workingOn
+      ? [{ id: Date.now(), name: 'current positions', content: data.workingOn }]
+      : [];
+  }
+  if (!data.everythingSections) {
+    data.everythingSections = [
+      data.photos ? { id: Date.now() + 1, name: 'photos', content: data.photos } : null,
+      data.places ? { id: Date.now() + 2, name: 'places', content: data.places } : null,
+      data.food   ? { id: Date.now() + 3, name: 'food',   content: data.food }   : null,
+    ].filter(Boolean);
+  }
+  return data;
+}
 
 function AboutSection() {
-  const [data,    setData]    = useState(store.getAbout);
-  const [saved,   setSaved]   = useState(false);
-  const [preview, setPreview] = useState(null);
+  const [data,  setData]  = useState(() => migrateAbout(store.getAbout()));
+  const [saved, setSaved] = useState(false);
 
   const set = (key) => (val) => setData(d => ({ ...d, [key]: val }));
 
@@ -695,27 +779,6 @@ function AboutSection() {
     setTimeout(() => setSaved(false), 2500);
   };
 
-  const mdFields = [
-    {
-      key: 'intro',
-      label: 'Intro paragraphs',
-      hint: 'Supports **bold**, *italic*, [link text](url). Blank lines = new paragraph.',
-      rows: 7,
-    },
-    {
-      key: 'workingOn',
-      label: 'What I\'m working on',
-      hint: 'Use "- item" for bullet points. Links: [label](url).',
-      rows: 5,
-    },
-  ];
-
-  const elseFields = [
-    { key: 'photos', label: 'Everything else → Photos', rows: 4 },
-    { key: 'places', label: 'Everything else → Places', rows: 4 },
-    { key: 'food',   label: 'Everything else → Food',   rows: 4 },
-  ];
-
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
@@ -724,7 +787,7 @@ function AboutSection() {
             "hi im srinjoy" page
           </h2>
           <p style={{ fontFamily: SANS, fontSize: '0.8rem', color: '#999', margin: '6px 0 0' }}>
-            Edit all content in markdown. Changes appear live on the /all page.
+            Edits appear on the /all page. Subsections are collapsible.
           </p>
         </div>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
@@ -733,66 +796,31 @@ function AboutSection() {
         </div>
       </div>
 
-      {/* Main markdown fields */}
-      {mdFields.map(({ key, label, hint, rows }) => (
-        <div key={key} style={{ background: '#F9FAFB', border: '1px solid #E5E5E5', borderRadius: 12, padding: 24, marginBottom: 16 }}>
-          <Field label={label}>
-            <textarea
-              value={data[key] ?? ''}
-              onChange={e => set(key)(e.target.value)}
-              rows={rows}
-              style={{
-                ...input(), resize: 'vertical', lineHeight: 1.7,
-                fontFamily: MONO, fontSize: '0.82rem',
-              }}
-            />
-            {hint && <span style={ABOUT_HINT}>{hint}</span>}
-          </Field>
-          <button
-            type="button"
-            onClick={() => setPreview(prev => prev === key ? null : key)}
-            style={{ ...btn(), fontSize: '0.75rem', marginTop: 4 }}
-          >
-            {preview === key ? 'Hide preview' : 'Preview'}
-          </button>
-          {preview === key && <MdPreview text={data[key]} />}
-        </div>
-      ))}
-
-      {/* Divider */}
-      <div style={{ borderTop: '1px solid #E5E5E5', margin: '24px 0', paddingTop: 24 }}>
-        <p style={{ ...label, fontSize: '0.8rem', color: '#555', marginBottom: 16 }}>
-          "Everything else" sub-sections
-        </p>
-        <p style={{ fontFamily: SANS, fontSize: '0.8rem', color: '#aaa', marginBottom: 20, lineHeight: 1.6 }}>
-          These appear as expandable sub-sections under the "everything else" accordion on the page. Use markdown — headings (#, ##), lists (- item), links ([text](url)), **bold**, *italic*.
-        </p>
+      {/* Intro */}
+      <div style={{ background: '#F9FAFB', border: '1px solid #E5E5E5', borderRadius: 12, padding: 24, marginBottom: 16 }}>
+        <Field label="Intro paragraphs">
+          <textarea
+            value={data.intro ?? ''}
+            onChange={e => set('intro')(e.target.value)}
+            rows={7}
+            style={{ ...input(), resize: 'vertical', lineHeight: 1.7, fontFamily: MONO, fontSize: '0.82rem' }}
+          />
+        </Field>
       </div>
 
-      {/* Everything else fields */}
-      {elseFields.map(({ key, label: elseLabel, rows }) => (
-        <div key={key} style={{ background: '#F9FAFB', border: '1px solid #E5E5E5', borderRadius: 12, padding: 24, marginBottom: 16 }}>
-          <Field label={elseLabel}>
-            <textarea
-              value={data[key] ?? ''}
-              onChange={e => set(key)(e.target.value)}
-              rows={rows}
-              style={{
-                ...input(), resize: 'vertical', lineHeight: 1.7,
-                fontFamily: MONO, fontSize: '0.82rem',
-              }}
-            />
-          </Field>
-          <button
-            type="button"
-            onClick={() => setPreview(prev => prev === key ? null : key)}
-            style={{ ...btn(), fontSize: '0.75rem', marginTop: 4 }}
-          >
-            {preview === key ? 'Hide preview' : 'Preview'}
-          </button>
-          {preview === key && <MdPreview text={data[key]} />}
-        </div>
-      ))}
+      {/* What I'm working on subsections */}
+      <SubsectionListPanel
+        title="What I'm working on — subsections"
+        sections={data.workingOnSections ?? []}
+        onChange={set('workingOnSections')}
+      />
+
+      {/* Everything else subsections */}
+      <SubsectionListPanel
+        title="Everything else — subsections"
+        sections={data.everythingSections ?? []}
+        onChange={set('everythingSections')}
+      />
     </div>
   );
 }

@@ -141,11 +141,21 @@ export default function EverythingPage({ isDark }) {
   const border = isDark ? '#2A2A2A' : '#E0E0E0';
   const accent = '#00BFA6';
 
-  const [workingOnOpen,    setWorkingOnOpen]    = useState(false);
-  const [everythingOpen,   setEverythingOpen]   = useState(false);
-  const [photosOpen,       setPhotosOpen]       = useState(false);
-  const [placesOpen,       setPlacesOpen]       = useState(false);
-  const [foodOpen,         setFoodOpen]         = useState(false);
+  const [aboutMeOpen,    setAboutMeOpen]    = useState(false);
+  const [workingOnOpen,  setWorkingOnOpen]  = useState(false);
+  const [everythingOpen, setEverythingOpen] = useState(false);
+  const [openSubs,       setOpenSubs]       = useState({});
+
+  const toggleSub = (id) => setOpenSubs(prev => ({ ...prev, [id]: !prev[id] }));
+
+  const workingOnSections = about.workingOnSections
+    ?? (about.workingOn ? [{ id: '__legacy__', name: 'current', content: about.workingOn }] : []);
+
+  const everythingSections = about.everythingSections ?? [
+    { id: '__photos__', name: 'photos', content: about.photos ?? '' },
+    { id: '__places__', name: 'places', content: about.places ?? '' },
+    { id: '__food__',   name: 'food',   content: about.food ?? '' },
+  ];
 
   const mdStyles = `
     .md-p   { font-family: ${MONO}; font-size: 1rem; line-height: 1.85; color: ${muted}; margin: 0 0 1rem; }
@@ -185,10 +195,26 @@ export default function EverythingPage({ isDark }) {
         </h1>
 
         {/* ── Intro (markdown from store) ── */}
-        <Md text={about.intro} />
+        <div style={{ textAlign: 'center' }}>
+          <Md text={about.intro} />
+        </div>
 
         {/* ── Spacer ── */}
         <div style={{ height: '2.4rem' }} />
+
+        {/* ── Accordion: about me ── */}
+        {about.aboutMe && (
+          <Accordion
+            label="about me"
+            open={aboutMeOpen}
+            onToggle={() => setAboutMeOpen(o => !o)}
+            text={text} muted={muted} border={border}
+          >
+            <div style={{ paddingTop: '0.8rem' }}>
+              <Md text={about.aboutMe} />
+            </div>
+          </Accordion>
+        )}
 
         {/* ── Accordion: what i'm working on ── */}
         <Accordion
@@ -197,38 +223,49 @@ export default function EverythingPage({ isDark }) {
           onToggle={() => setWorkingOnOpen(o => !o)}
           text={text} muted={muted} border={border}
         >
-          {/* Current positions (markdown) */}
-          <div style={{ paddingTop: '1.2rem', marginBottom: workItems.length > 0 ? '1.8rem' : 0 }}>
-            <Md text={about.workingOn} />
+          <div style={{ paddingTop: '0.8rem' }}>
+            {workingOnSections.map(sec => (
+              <SubAccordion
+                key={sec.id}
+                label={sec.name}
+                open={!!openSubs[sec.id]}
+                onToggle={() => toggleSub(sec.id)}
+                text={text} muted={muted} border={border}
+              >
+                <Md text={sec.content} />
+              </SubAccordion>
+            ))}
+
+            {workItems.length > 0 && (
+              <SubAccordion
+                label="work"
+                open={!!openSubs['__work__']}
+                onToggle={() => toggleSub('__work__')}
+                text={text} muted={muted} border={border}
+              >
+                <div style={{ borderTop: `1px solid ${border}` }}>
+                  {workItems.map(item => (
+                    <ExpandRow key={item.id} item={item} accent={accent} muted={muted} border={border} text={text} />
+                  ))}
+                </div>
+              </SubAccordion>
+            )}
+
+            {posts.length > 0 && (
+              <SubAccordion
+                label="writing"
+                open={!!openSubs['__writing__']}
+                onToggle={() => toggleSub('__writing__')}
+                text={text} muted={muted} border={border}
+              >
+                <div style={{ borderTop: `1px solid ${border}` }}>
+                  {posts.map(post => (
+                    <ExpandRow key={post.id} item={post} accent={accent} muted={muted} border={border} text={text} />
+                  ))}
+                </div>
+              </SubAccordion>
+            )}
           </div>
-
-          {/* Detailed work items from admin */}
-          {workItems.length > 0 && (
-            <div>
-              <p style={{ fontFamily: MONO, fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: muted, margin: '0 0 0.35rem' }}>
-                Work
-              </p>
-              <div style={{ borderTop: `1px solid ${border}` }}>
-                {workItems.map(item => (
-                  <ExpandRow key={item.id} item={item} accent={accent} muted={muted} border={border} text={text} />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Writing posts from admin */}
-          {posts.length > 0 && (
-            <div style={{ marginTop: '2rem' }}>
-              <p style={{ fontFamily: MONO, fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: muted, margin: '0 0 0.35rem' }}>
-                Writing
-              </p>
-              <div style={{ borderTop: `1px solid ${border}` }}>
-                {posts.map(post => (
-                  <ExpandRow key={post.id} item={post} accent={accent} muted={muted} border={border} text={text} />
-                ))}
-              </div>
-            </div>
-          )}
         </Accordion>
 
         {/* ── Accordion: everything else ── */}
@@ -239,46 +276,25 @@ export default function EverythingPage({ isDark }) {
           text={text} muted={muted} border={border}
         >
           <div style={{ paddingTop: '0.8rem' }}>
-
-            {/* Photos sub-accordion */}
-            <SubAccordion
-              label="photos"
-              open={photosOpen}
-              onToggle={() => setPhotosOpen(o => !o)}
-              text={text} muted={muted} border={border}
-            >
-              <Md text={about.photos} />
-            </SubAccordion>
-
-            {/* Places sub-accordion */}
-            <SubAccordion
-              label="places"
-              open={placesOpen}
-              onToggle={() => setPlacesOpen(o => !o)}
-              text={text} muted={muted} border={border}
-            >
-              <Md text={about.places} />
-            </SubAccordion>
-
-            {/* Food sub-accordion */}
-            <SubAccordion
-              label="food"
-              open={foodOpen}
-              onToggle={() => setFoodOpen(o => !o)}
-              text={text} muted={muted} border={border}
-            >
-              <Md text={about.food} />
-            </SubAccordion>
-
+            {everythingSections.map(sec => (
+              <SubAccordion
+                key={sec.id}
+                label={sec.name}
+                open={!!openSubs[sec.id]}
+                onToggle={() => toggleSub(sec.id)}
+                text={text} muted={muted} border={border}
+              >
+                <Md text={sec.content} />
+              </SubAccordion>
+            ))}
           </div>
         </Accordion>
 
         {/* ── Connect ── */}
-        <p style={{ fontFamily: MONO, fontSize: '1rem', lineHeight: 1.85, color: muted, marginTop: '3rem', marginBottom: 0 }}>
-          Find me on{' '}
-          <a className="e-link" href={contact.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
-          {' '}or write to{' '}
-          <a className="e-link" href={`mailto:${contact.email}`}>{contact.email}</a>.
+        <p style={{ fontFamily: MONO, fontSize: '0.95rem', color: muted, marginTop: '3rem', marginBottom: 0, textAlign: 'center', letterSpacing: '0.03em' }}>
+          <a className="e-link" href={contact.linkedin} target="_blank" rel="noreferrer">ln</a>
+          <span style={{ margin: '0 0.6em', opacity: 0.4 }}>·</span>
+          <a className="e-link" href={`mailto:${contact.email}`}>email</a>
         </p>
       </div>
     </div>

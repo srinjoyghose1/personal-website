@@ -48,7 +48,7 @@ export default function ProteinViewer({ isDark }) {
 
         viewer.zoomTo();
         viewer.render();
-        viewer.spin('y', 0.85);
+        viewer.spin('y', 0.6);
       });
     };
 
@@ -61,16 +61,13 @@ export default function ProteinViewer({ isDark }) {
     <>
       <style>{`
         @keyframes protein-float {
-          0%   { transform: translate3d(-1.2%, 0.8%, 0) scale(1.03) rotate(-0.4deg); }
-          35%  { transform: translate3d(1.1%, -1.4%, 0) scale(1.055) rotate(0.3deg); }
-          70%  { transform: translate3d(0.4%, 1.1%, 0) scale(1.035) rotate(0.6deg); }
-          100% { transform: translate3d(-1.2%, 0.8%, 0) scale(1.03) rotate(-0.4deg); }
+          0%   { transform: translateY(0px)   scale(1);     }
+          50%  { transform: translateY(-14px) scale(1.012); }
+          100% { transform: translateY(0px)   scale(1);     }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .protein-viewer-motion {
-            animation: none !important;
-          }
+          .protein-viewer-motion { animation: none !important; }
         }
       `}</style>
       <div
@@ -81,7 +78,8 @@ export default function ProteinViewer({ isDark }) {
           height: '100%',
           position: 'relative',
           transformOrigin: '50% 50%',
-          animation: 'protein-float 18s ease-in-out infinite',
+          animation: 'protein-float 22s ease-in-out infinite',
+          animationDelay: '0.8s',
           willChange: 'transform',
         }}
       />
