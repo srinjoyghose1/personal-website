@@ -9,59 +9,6 @@ import AboutPage from './pages/AboutPage';
 import ProteinDeepDivePage from './pages/ProteinDeepDivePage';
 import AdminPage from './pages/AdminPage';
 
-// ─── "click here" hint — lives at root so position:fixed is viewport-relative ──
-const HERO_KEY = 'hero_seen';
-
-function ClickHint({ isDark }) {
-  const alreadySeen = sessionStorage.getItem(HERO_KEY) === 'true';
-  const delay = alreadySeen ? 1.1 : 3.3;
-  const color = isDark ? '#C8C8C8' : '#2A2A2A';
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: [0, 0.82, 0.82, 0] }}
-      exit={{ opacity: 0 }}
-      transition={{ delay, duration: 7.5, times: [0, 0.07, 0.72, 1], ease: 'easeInOut' }}
-      style={{
-        position: 'fixed', left: 20, top: 258,
-        zIndex: 52, pointerEvents: 'none', userSelect: 'none',
-      }}
-    >
-      <div style={{
-        fontFamily: "'Caveat', cursive",
-        fontSize: '1.22rem', fontWeight: 600,
-        color, marginLeft: 48, lineHeight: 1.15,
-        transform: 'rotate(-5deg)',
-      }}>
-        click here
-      </div>
-      <svg width="110" height="148" viewBox="0 0 110 148" style={{ display: 'block', marginTop: 1 }}>
-        <motion.path
-          d="M 76 10 C 86 44, 64 90, 28 138"
-          fill="none" stroke={color} strokeWidth="1.75" strokeLinecap="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.74 }}
-          transition={{ delay: delay + 0.1, duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
-        />
-        <motion.path
-          d="M 28 138 L 17 122"
-          fill="none" stroke={color} strokeWidth="1.75" strokeLinecap="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.74 }}
-          transition={{ delay: delay + 0.9, duration: 0.21, ease: 'easeOut' }}
-        />
-        <motion.path
-          d="M 28 138 L 40 129"
-          fill="none" stroke={color} strokeWidth="1.75" strokeLinecap="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.74 }}
-          transition={{ delay: delay + 1.08, duration: 0.21, ease: 'easeOut' }}
-        />
-      </svg>
-    </motion.div>
-  );
-}
 
 const PageWrapper = ({ children, isDark }) => (
   <motion.div
@@ -163,11 +110,6 @@ export default function App() {
       <ScrollProgress />
       <CustomCursor />
       <NavMenu isDark={isDark} onToggleDark={toggle} />
-
-      {/* Hint rendered outside page AnimatePresence — keeps position:fixed in viewport */}
-      <AnimatePresence>
-        {location.pathname === '/' && <ClickHint key="click-hint" isDark={isDark} />}
-      </AnimatePresence>
 
       <AnimatePresence mode="wait" initial={false}>
         <Routes location={location} key={location.pathname}>

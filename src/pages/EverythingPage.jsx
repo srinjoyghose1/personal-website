@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { contact } from '../data/profile';
-import { useAbout, useResearch, useBlog } from '../hooks/useContent';
+import { useAbout } from '../hooks/useContent';
 import { renderMd } from '../lib/markdown';
 
 const MONO = "'IBM Plex Mono', monospace";
@@ -13,62 +13,6 @@ function Md({ text }) {
   );
 }
 
-// ─── Expandable row (for work/writing items) ──────────────────────────────────
-function ExpandRow({ item, accent, muted, border, text }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div style={{ borderBottom: `1px solid ${border}` }}>
-      <button
-        onClick={() => setOpen(o => !o)}
-        style={{
-          width: '100%', background: 'none', border: 'none', cursor: 'pointer',
-          padding: '0.55rem 0', display: 'flex', alignItems: 'baseline', gap: '1rem',
-          textAlign: 'left',
-        }}
-      >
-        <span style={{ fontFamily: MONO, fontSize: '0.75rem', color: accent, letterSpacing: '0.04em', flexShrink: 0, minWidth: '8rem' }}>
-          {item.category}
-        </span>
-        <span style={{ flex: 1, fontFamily: MONO, fontSize: '0.96rem', color: text, transition: 'color 0.15s' }}>
-          {item.title}
-        </span>
-        <span style={{ fontFamily: MONO, fontSize: '0.78rem', color: muted, flexShrink: 0 }}>
-          {item.date}
-        </span>
-        <span style={{ fontFamily: MONO, fontSize: '0.85rem', color: muted, flexShrink: 0, display: 'inline-block', transition: 'transform 0.15s', transform: open ? 'rotate(90deg)' : 'none' }}>
-          ›
-        </span>
-      </button>
-      {open && (
-        <div style={{ padding: '0.6rem 0 1rem', marginLeft: '9rem' }}>
-          {item.abstract && (
-            <p style={{ fontFamily: MONO, fontSize: '0.88rem', lineHeight: 1.75, color: muted, margin: '0 0 0.65rem' }}>
-              {item.abstract}
-            </p>
-          )}
-          {item.excerpt && (
-            <p style={{ fontFamily: MONO, fontSize: '0.88rem', lineHeight: 1.75, color: muted, margin: '0 0 0.65rem' }}>
-              {item.excerpt}
-            </p>
-          )}
-          {(item.links ?? []).map((link, i) => (
-            <a
-              key={i}
-              href={link.url}
-              target={link.url?.startsWith('http') ? '_blank' : undefined}
-              rel={link.url?.startsWith('http') ? 'noreferrer' : undefined}
-              style={{ display: 'block', fontFamily: MONO, fontSize: '0.84rem', color: accent, textDecoration: 'none', marginBottom: '0.15rem' }}
-              onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
-              onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
-            >
-              {link.label} ↗
-            </a>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
 
 // ─── Top-level accordion ──────────────────────────────────────────────────────
 function Accordion({ label, open, onToggle, children, text, muted, border }) {
@@ -131,9 +75,7 @@ function SubAccordion({ label, open, onToggle, children, text, muted, border }) 
 
 // ─── Main page ────────────────────────────────────────────────────────────────
 export default function EverythingPage({ isDark }) {
-  const about      = useAbout();
-  const workItems  = useResearch();
-  const posts      = useBlog();
+  const about = useAbout();
 
   const bg     = isDark ? '#0D0D0D' : '#FAFAF8';
   const text   = isDark ? '#E0E0E0' : '#1A1A1A';
@@ -190,6 +132,7 @@ export default function EverythingPage({ isDark }) {
           lineHeight: 1.1,
           margin: '0 0 2.2rem',
           color: text,
+          textAlign: 'center',
         }}>
           hi im srinjoy
         </h1>
@@ -236,35 +179,6 @@ export default function EverythingPage({ isDark }) {
               </SubAccordion>
             ))}
 
-            {workItems.length > 0 && (
-              <SubAccordion
-                label="work"
-                open={!!openSubs['__work__']}
-                onToggle={() => toggleSub('__work__')}
-                text={text} muted={muted} border={border}
-              >
-                <div style={{ borderTop: `1px solid ${border}` }}>
-                  {workItems.map(item => (
-                    <ExpandRow key={item.id} item={item} accent={accent} muted={muted} border={border} text={text} />
-                  ))}
-                </div>
-              </SubAccordion>
-            )}
-
-            {posts.length > 0 && (
-              <SubAccordion
-                label="writing"
-                open={!!openSubs['__writing__']}
-                onToggle={() => toggleSub('__writing__')}
-                text={text} muted={muted} border={border}
-              >
-                <div style={{ borderTop: `1px solid ${border}` }}>
-                  {posts.map(post => (
-                    <ExpandRow key={post.id} item={post} accent={accent} muted={muted} border={border} text={text} />
-                  ))}
-                </div>
-              </SubAccordion>
-            )}
           </div>
         </Accordion>
 
