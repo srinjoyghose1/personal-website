@@ -12,9 +12,9 @@
   ],
 
   "everythingSections": [
-    { "id": 2, "name": "photos",  "content": "*Coming soon* — photos from Hong Kong, Kolkata, and the lab." },
-    { "id": 3, "name": "places",  "content": "*Coming soon* — favorite spots, cities, and places worth visiting." },
-    { "id": 4, "name": "food",    "content": "*Coming soon* — restaurants, street food, and things worth eating." }
+    { "id": 2, "name": "photos",  "content": "Coming soon" },
+    { "id": 3, "name": "places",  "content": "Coming soon" },
+    { "id": 4, "name": "food",    "content": "Coming soon" }
   ],
 
   "contact": {
