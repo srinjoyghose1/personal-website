@@ -1,1 +1,1 @@
-this is my personal website project
+this personal website is a host of my thoughts
